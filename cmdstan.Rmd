@@ -17,6 +17,11 @@ install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOpt
 # install.packages("remotes")
 remotes::install_github("stan-dev/cmdstanr")
 ```
+```{r}
+# This is only required if Rtools is installed but the toolchain is not setup properly
+cmdstanr::check_cmdstan_toolchain(fix = TRUE)
+```
+
 
 ```{r}
 cmdstanr::install_cmdstan()
