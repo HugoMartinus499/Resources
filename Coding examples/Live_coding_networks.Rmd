@@ -19,8 +19,8 @@ pacman::p_load(tidyverse,
 
 ### Load data
 ```{r}
-nodes <- read_csv("nodes_comp_sci.csv")
-edges <- read_csv("edges_comp_sci.csv")
+nodes <- read_csv(file.choose())
+edges <- read_csv(file.choose())
 ```
 
 ```{r}
