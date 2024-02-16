@@ -1,0 +1,122 @@
+---
+title: "Untitled"
+author: "Hugo von Essen-Müller"
+date: "2024-02-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+### Load packages
+```{r}
+pacman::p_load(tidyverse, 
+               igraph)
+```
+
+### Load data
+```{r}
+nodes <- read_csv("nodes_comp_sci.csv")
+edges <- read_csv("edges_comp_sci.csv")
+```
+
+```{r}
+view(nodes)
+view(edges)
+```
+
+### Load into igraph class
+```{r}
+comp_sci_graph <- graph_from_data_frame(d = edges, 
+                                        vertices = nodes, 
+                                        directed = F)
+```
+
+```{r}
+plot(comp_sci_graph)
+```
+### Try different layouts
+```{r}
+plot(comp_sci_graph, layout = layout_in_circle)
+```
+```{r}
+plot(comp_sci_graph, layout = layout_as_star)
+```
+```{r}
+plot(comp_sci_graph, layout = layout_as_tree)
+```
+
+```{r}
+plot(comp_sci_graph, layout = layout_nicely)
+```
+### Simplify graph
+```{r}
+comp_graph_simple <- simplify(comp_sci_graph,
+                              remove.multiple = TRUE,
+                              remove.loops = TRUE,
+                              edge.attr.comb = list(weight = "sum"))
+```
+
+### Plot aimplified graph
+```{r}
+plot(comp_graph_simple, layout = layout_nicely)
+```
+### Make graph prettier
+```{r}
+V(comp_graph_simple)$frame.color <- "white"
+V(comp_graph_simple)$color <- "green4"
+V(comp_graph_simple)$label <- ""
+
+E(comp_graph_simple)$width <- edge_attr(comp_graph_simple)$weight/2
+```
+
+### Plot prettier graph
+```{r}
+plot(comp_graph_simple, layout = layout_nicely)
+```
+### assign degrees as size
+```{r}
+deg <- degree(comp_graph_simple, mode = "all")
+V(comp_graph_simple)$size <- deg
+```
+
+### Plot new improved plot
+```{r}
+plot(comp_graph_simple, layout = layout_nicely)
+```
+### Degreedistribution
+```{r}
+### Degree
+deg_dist <- degree_distribution(comp_graph_simple, cumulative = F, mode = "all")
+
+plot(x = 0:max(deg), y = deg_dist, col = "green4", xlab = "degree")
+```
+### Max number of degrees
+```{r}
+which.max(degree(comp_graph_simple))
+
+```
+### Avg distance to get to unconnected person
+```{r}
+mean_distance(comp_graph_simple, directed = F, unconnected = T)
+```
+### distance between two people
+```{r}
+distances(comp_graph_simple, "U48", to = "U41")
+```
+### Transtivity
+```{r}
+transitivity(comp_graph_simple)
+```
+### betweenness
+```{r}
+mean(betweenness(comp_graph_simple))
+```
+### Eigen central
+```{r}
+eigen_centrality(comp_graph_simple)$vector
+```
+
