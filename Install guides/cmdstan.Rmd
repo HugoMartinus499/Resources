@@ -17,6 +17,7 @@ install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOpt
 # install.packages("remotes")
 remotes::install_github("stan-dev/cmdstanr")
 ```
+
 ```{r}
 # This is only required if Rtools is installed but the toolchain is not setup properly
 cmdstanr::check_cmdstan_toolchain(fix = TRUE)
@@ -24,11 +25,9 @@ cmdstanr::check_cmdstan_toolchain(fix = TRUE)
 
 
 ```{r}
+# This is to compile libraries
 cmdstanr::install_cmdstan()
 ```
 
-```{r}
-install.packages(c("coda","mvtnorm","devtools","loo","dagitty","shape"))
-devtools::install_github("rmcelreath/rethinking")
-```
+
 

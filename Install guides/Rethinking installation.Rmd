@@ -1,0 +1,20 @@
+---
+title: "Install rethinking"
+author: "Hugo von Essen-Müller"
+date: "2024-02-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+To install rethinking, first install cmdstan, guide can be found on repo: https://github.com/HugoMartinus499/Resources
+
+```{r}
+# Run this to install rethinking
+install.packages(c("coda","mvtnorm","devtools","loo","dagitty","shape"))
+devtools::install_github("rmcelreath/rethinking")
+```
+
+Also for further rethinking knowhow go to rethinking native Github Repo: https://github.com/rmcelreath/rethinking
