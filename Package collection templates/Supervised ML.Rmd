@@ -1,0 +1,33 @@
+---
+title: "Template packages for Supervised ML"
+output: html_document
+date: "2024-02-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+pacman::p_load(tidyverse, 
+               tidymodels, 
+               rsample, 
+               groupdata2, 
+               tune, 
+               dials, 
+               recipes, 
+               workflows, 
+               workflowsets, 
+               parsnip, 
+               yardstick, 
+               randomForest, 
+               vip, 
+               agua, 
+               sparklyr, 
+               bonsai, 
+               lightgbm, 
+               corrplot, 
+               patchwork)
+```
+
+### This includes packages that are useful to have when working with supervised ML
