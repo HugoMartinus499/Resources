@@ -1,0 +1,30 @@
+---
+title: "BMRS install"
+output: html_document
+date: "2024-02-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### There are two ways to install the brms package
+```{r}
+### Through CRAN
+
+install.packages("brms")
+```
+
+
+```{r}
+### Through Github
+
+if (!requireNamespace("remotes")) {
+  install.packages("remotes")
+}
+remotes::install_github("paul-buerkner/brms")
+```
+
+#### NB ######
+In order to install BRMS it is important to install cmdstanr and necessary RTools.
+Follow installation guide to these found in this Github Repo: https://github.com/HugoMartinus499/Resources
