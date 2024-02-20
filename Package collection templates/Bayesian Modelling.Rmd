@@ -13,7 +13,14 @@ pacman::p_load(
   tidyverse,
   brms,
   patchwork,
-  rethinking
+  rethinking,
+  rstanarm,
+  performance,
+  see,
+  ggplot2,
+  ggiraphExtra,
+  grid,
+  gridExtra
 )
 ```
 

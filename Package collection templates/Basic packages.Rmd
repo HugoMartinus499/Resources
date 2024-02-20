@@ -1,0 +1,32 @@
+---
+title: "base packages"
+author: "Hugo von Essen-Müller"
+date: "2024-02-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(pastecs)
+library(dplyr)
+library(gridExtra)
+library(stringi)
+library(WRS2)
+library(car)
+library(readxl)
+library(janitor)
+library(fedmatch)#(https://cran.r-project.org/web/packages/fedmatch/vignettes/Fuzzy-matching.html)
+library(broom)
+library(knitr)
+library(car)
+library(dlookr)
+library(flextable)
+library(rstanarm)
+library(performance)
+```
+
