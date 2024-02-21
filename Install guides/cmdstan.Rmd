@@ -8,6 +8,9 @@ date: "2024-02-15"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+##### Before installing cmdstanr, make sure to intall the correct version of Rtools #####
+
 ```{r}
 # we recommend running this is a fresh R session or restarting your current session
 install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
