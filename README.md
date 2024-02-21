@@ -8,5 +8,5 @@ Additionally it includes install guides, with code.
 An effort is made to keep code as commentated and readable as possible, to help with understanding and making it easier to follow.
 
 ## Cmdstan install order
-1. https://cran.r-project.org/bin/windows/Rtools/rtools43/rtools.html
-2. https://mc-stan.org/cmdstanr/
+1. To install the Rtools toolchain for compiling, go to: https://cran.r-project.org/bin/windows/Rtools/rtools43/rtools.html
+2. This is a guide to the cmdstan packages: https://mc-stan.org/cmdstanr/
