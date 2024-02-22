@@ -13,6 +13,13 @@
     -- % before string searches for any number of characters before string, ie. "ends with"
     -- % after string searches for any number of characters after string, ie. "starts with"
     -- % before and after string searches for number of characters before and after, ie. "contains"
+-- IN statement can be used in conjunction with WHERE to filter for multiple identifiers, works like "is one of"
+-- NOT statement is great in conjunction with LIKE and IN to find all registrations not fitting criteria, works like "is not"
+-- AND and BETWEEN  operators are good for intervals and stacking filters
+-- OR is great for finding differences in the data, can be used with all other operators using parentheses to stack filters
+
+-- CODING Examples --
+-- SQL Basics
 
 -- 15 events from web_events
 SELECT occurred_at, account_id, channel
@@ -73,7 +80,7 @@ SELECT id, account_id, standard_amt_usd/standard_qty AS unit_price
 SELECT id, account_id, poster_amt_usd/(standard_amt_usd + poster_amt_usd + gloss_amt_usd)*100 AS perc_poster_rev
 	FROM orders;
 
--- All companies with names start start with 'C'
+-- All companies with names that start with 'C'
 SELECT *
 	FROM accounts
     WHERE name LIKE 'C%';
@@ -87,3 +94,76 @@ SELECT *
 SELECT *
 	FROM accounts
     WHERE name LIKE '%s';
+
+-- Name, primary point of contact and sales rep id for Walmart, Target and Nordstrom
+SELECT name, primary_poc, sales_rep_id
+	FROM accounts
+    WHERE name IN ('Walmart', 'Target', 'Nordstrom');
+
+-- All information for individuals contacted through channels organic or adwords   
+SELECT *
+	FROM web_events
+    WHERE channel IN ('organic', 'adwords');
+
+-- Name, primary point of contact and sales rep id for all except Walmart, Target and Nordstrom
+SELECT name, primary_poc, sales_rep_id
+	FROM accounts
+    WHERE name NOT IN ('Walmart', 'Target', 'Nordstrom');
+
+-- All information for individuals contacted through all channels except organic or adwords   
+SELECT *
+	FROM web_events
+    WHERE channel NOT IN ('organic', 'adwords');
+
+-- All companies with names that do not start with 'C'
+SELECT *
+	FROM accounts
+    WHERE name NOT LIKE 'C%';
+
+-- All companies with names that do not contain the string 'one'
+SELECT *
+	FROM accounts
+    WHERE name NOT LIKE '%one%';
+
+-- All companies with names that do not end with 's'    
+SELECT *
+	FROM accounts
+    WHERE name NOT LIKE '%s';
+
+-- all orders where standard_qty is over thousand and poster_qty and gloss_qty is 0
+SELECT *
+	FROM orders
+    WHERE standard_qty >1000 
+    AND poster_qty = 0 
+    AND gloss_qty = 0;
+
+-- all companies whose name does not start with c and ends with s  
+SELECT *
+	FROM accounts
+    WHERE name NOT LIKE 'C%' AND name LIKE '%s';
+
+-- order date and gloss_qty for all gloss_qty between 24 and 29 in descending order to see if values at endpoint are included    
+SELECT occurred_at, gloss_qty
+	FROM orders
+    WHERE gloss_qty BETWEEN 24 AND 29
+    ORDER BY gloss_qty DESC;
+    -- answer is that yes it includes values at endpoint
+
+-- all information on  individuals who where contacted through organic or adwords channel and started their account sometime in 2016 sorted newest to oldest    
+SELECT *
+	FROM web_events
+    WHERE channel IN ('organic', 'adwords') 
+    AND occurred_at BETWEEN '2016-01-01' AND '2017-01-01'
+    ORDER BY occurred_at DESC;
+
+-- List of orders where standard_qty is zero and either gloss_qty or poster_qty is greater than 1000
+SELECT *
+	FROM orders
+    WHERE standard_qty = 0 AND (gloss_qty > 1000 OR poster_qty > 1000);
+    
+-- all company names that start with C or W and the primary contact contains ana or Ana, but does not contain eana
+SELECT name
+	FROM accounts
+    WHERE (name LIKE 'C%' OR name LIKE 'W%') 
+        AND ((primary_poc LIKE '%ana%' OR primary_poc LIKE '%Ana%') 
+        AND primary_poc NOT LIKE '%eana%');
