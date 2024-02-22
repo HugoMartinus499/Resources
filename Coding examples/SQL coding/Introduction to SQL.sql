@@ -17,6 +17,7 @@
 -- NOT statement is great in conjunction with LIKE and IN to find all registrations not fitting criteria, works like "is not"
 -- AND and BETWEEN  operators are good for intervals and stacking filters
 -- OR is great for finding differences in the data, can be used with all other operators using parentheses to stack filters
+-- JOIN is used with ON to pull data from multiple tables, ON is used to determine what columnn is used to JOIN the tables
 
 -- CODING Examples --
 -- SQL Basics
@@ -167,3 +168,18 @@ SELECT name
     WHERE (name LIKE 'C%' OR name LIKE 'W%') 
         AND ((primary_poc LIKE '%ana%' OR primary_poc LIKE '%Ana%') 
         AND primary_poc NOT LIKE '%eana%');
+
+
+-- JOIN SQL
+
+-- Pulling all data from accounts and joining orders by account id
+SELECT accounts.*, orders.*
+	FROM accounts
+    JOIN orders 
+    ON accounts.id = orders.account_id;
+    
+-- Pulling all qty from orders and joining the website and primary_poc from accounts
+SELECT orders.standard_qty, orders.gloss_qty, orders.poster_qty, accounts.website, accounts.primary_poc
+	FROM orders
+    JOIN accounts
+    ON orders.account_id = accounts.id;
