@@ -18,6 +18,8 @@
 -- AND and BETWEEN  operators are good for intervals and stacking filters
 -- OR is great for finding differences in the data, can be used with all other operators using parentheses to stack filters
 -- JOIN is used with ON to pull data from multiple tables, ON is used to determine what columnn is used to JOIN the tables
+-- Aliases can be used to not have to type out long table names, can be done with the AS statement or with just a space after the name and then the alias
+-- It is important to name columns, otherwise they might fuse together when joining
 
 -- CODING Examples --
 -- SQL Basics
@@ -183,3 +185,30 @@ SELECT orders.standard_qty, orders.gloss_qty, orders.poster_qty, accounts.websit
 	FROM orders
     JOIN accounts
     ON orders.account_id = accounts.id;
+
+-- Webevents with time, channel, poc and name for walmart
+SELECT we.occurred_at, we.channel, a.primary_poc, a.name
+FROM web_events we
+JOIN accounts a
+ON we.account_id = a.id
+WHERE a.name = 'Walmart';
+
+-- Sales reps and their region and account sorted A-Z
+SELECT r.name region, s.name rep, a.name account
+FROM sales_reps s
+JOIN region r
+ON s.region_id = r.id
+JOIN accounts a
+ON a.sales_rep_id = s.id
+ORDER BY a.name;
+
+-- Region for every order, unit price and account name
+SELECT r.name region, a.name account, 
+           o.total_amt_usd/(o.total + 0.01) unit_price
+FROM region r
+JOIN sales_reps s
+ON s.region_id = r.id
+JOIN accounts a
+ON a.sales_rep_id = s.id
+JOIN orders o
+ON o.account_id = a.id;
