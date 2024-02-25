@@ -20,6 +20,7 @@
 -- JOIN is used with ON to pull data from multiple tables, ON is used to determine what columnn is used to JOIN the tables
 -- Aliases can be used to not have to type out long table names, can be done with the AS statement or with just a space after the name and then the alias
 -- It is important to name columns, otherwise they might fuse together when joining
+-- LEFT and RIGHT JOIN are effectively interchangable. If the right table contains extra rows, the query can be switched around so the right table is now the left table
 
 -- CODING Examples --
 -- SQL Basics
