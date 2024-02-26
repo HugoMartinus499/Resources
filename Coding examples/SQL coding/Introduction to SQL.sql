@@ -21,6 +21,7 @@
 -- Aliases can be used to not have to type out long table names, can be done with the AS statement or with just a space after the name and then the alias
 -- It is important to name columns, otherwise they might fuse together when joining
 -- LEFT and RIGHT JOIN are effectively interchangable. If the right table contains extra rows, the query can be switched around so the right table is now the left table
+-- Filtering using an AND clause when also using LEFT JOIN instead of the WHERE joins all rows but only populates the field of the AND clause when the filter is met
 
 -- CODING Examples --
 -- SQL Basics
@@ -33,30 +34,30 @@ SELECT occurred_at, account_id, channel
 -- 10 latest orders from order
 SELECT id, occurred_at, total_amt_usd
 	FROM orders
-    ORDER BY occurred_at
+ORDER BY occurred_at
     LIMIT 10;
 
 -- 5 largest orders from orders    
 SELECT id, account_id, total_amt_usd
 	FROM orders
-    ORDER BY total_amt_usd DESC
+ORDER BY total_amt_usd DESC
     LIMIT 5;
 
 -- 20 smallest orders from orders    
 SELECT id, account_id, total_amt_usd
 	FROM orders
-    ORDER BY total_amt_usd
+ORDER BY total_amt_usd
     LIMIT 20;
 
 -- all orders sorted in ascending order by account and then displaying the largest orders per account in descending order
 SELECT id, account_id, total_amt_usd
 	FROM orders
-    ORDER BY account_id ASC, total_amt_usd DESC;
+ORDER BY account_id ASC, total_amt_usd DESC;
 
 -- all orders sorted by largest orders in descending order and then if there is identical amounts, they are sorted by account in ascending order
 SELECT id, account_id, total_amt_usd
 	FROM orders
-    ORDER BY total_amt_usd DESC, account_id ASC;
+ORDER BY total_amt_usd DESC, account_id ASC;
 
 -- 5 first orders and all columns where gloss amount is greater than or equal to 1000 dollars 
 SELECT *
@@ -138,19 +139,19 @@ SELECT *
 SELECT *
 	FROM orders
     WHERE standard_qty >1000 
-    AND poster_qty = 0 
-    AND gloss_qty = 0;
+        AND poster_qty = 0 
+        AND gloss_qty = 0;
 
 -- all companies whose name does not start with c and ends with s  
 SELECT *
 	FROM accounts
-    WHERE name NOT LIKE 'C%' AND name LIKE '%s';
+WHERE name NOT LIKE 'C%' AND name LIKE '%s';
 
 -- order date and gloss_qty for all gloss_qty between 24 and 29 in descending order to see if values at endpoint are included    
 SELECT occurred_at, gloss_qty
 	FROM orders
     WHERE gloss_qty BETWEEN 24 AND 29
-    ORDER BY gloss_qty DESC;
+ORDER BY gloss_qty DESC;
     -- answer is that yes it includes values at endpoint
 
 -- all information on  individuals who where contacted through organic or adwords channel and started their account sometime in 2016 sorted newest to oldest    
@@ -158,7 +159,7 @@ SELECT *
 	FROM web_events
     WHERE channel IN ('organic', 'adwords') 
     AND occurred_at BETWEEN '2016-01-01' AND '2017-01-01'
-    ORDER BY occurred_at DESC;
+ORDER BY occurred_at DESC;
 
 -- List of orders where standard_qty is zero and either gloss_qty or poster_qty is greater than 1000
 SELECT *
@@ -179,37 +180,124 @@ SELECT name
 SELECT accounts.*, orders.*
 	FROM accounts
     JOIN orders 
-    ON accounts.id = orders.account_id;
+        ON accounts.id = orders.account_id;
     
 -- Pulling all qty from orders and joining the website and primary_poc from accounts
 SELECT orders.standard_qty, orders.gloss_qty, orders.poster_qty, accounts.website, accounts.primary_poc
 	FROM orders
     JOIN accounts
-    ON orders.account_id = accounts.id;
+        ON orders.account_id = accounts.id;
 
 -- Webevents with time, channel, poc and name for walmart
 SELECT we.occurred_at, we.channel, a.primary_poc, a.name
-FROM web_events we
-JOIN accounts a
-ON we.account_id = a.id
-WHERE a.name = 'Walmart';
+    FROM web_events we
+    JOIN accounts a
+        ON we.account_id = a.id
+    WHERE a.name = 'Walmart';
 
 -- Sales reps and their region and account sorted A-Z
 SELECT r.name region, s.name rep, a.name account
-FROM sales_reps s
-JOIN region r
-ON s.region_id = r.id
-JOIN accounts a
-ON a.sales_rep_id = s.id
+    FROM sales_reps s
+    JOIN region r
+        ON s.region_id = r.id
+    JOIN accounts a
+        ON a.sales_rep_id = s.id
 ORDER BY a.name;
 
 -- Region for every order, unit price and account name
 SELECT r.name region, a.name account, 
            o.total_amt_usd/(o.total + 0.01) unit_price
-FROM region r
-JOIN sales_reps s
-ON s.region_id = r.id
-JOIN accounts a
-ON a.sales_rep_id = s.id
-JOIN orders o
-ON o.account_id = a.id;
+    FROM region r
+    JOIN sales_reps s
+        ON s.region_id = r.id
+    JOIN accounts a
+        ON a.sales_rep_id = s.id
+    JOIN orders o
+        ON o.account_id = a.id;
+
+-- Table with midwest region, rep name and account sorted A-Z
+SELECT r.name Region, s.name Rep, a.name Account
+	FROM sales_reps s
+	JOIN region r
+		ON r.id = s.region_id
+	JOIN accounts a
+		ON s.id = a.sales_rep_id
+	WHERE r.name = 'Midwest'
+ORDER BY a.name;
+
+-- Table with midwest region, rep first names starting with S and account sorted A-Z
+SELECT r.name Region, s.name Rep, a.name Account
+	FROM sales_reps s
+	JOIN region r
+		ON r.id = s.region_id
+	JOIN accounts a
+		ON s.id = a.sales_rep_id
+	WHERE r.name = 'Midwest'
+		AND s.name LIKE 'S%'
+ORDER BY a.name;
+
+-- Table with midwest region, rep last names starting with K and account sorted A-Z
+SELECT r.name Region, s.name Rep, a.name Account
+	FROM sales_reps s
+	JOIN region r
+		ON r.id = s.region_id
+	JOIN accounts a
+		ON s.id = a.sales_rep_id
+	WHERE r.name = 'Midwest'
+		AND s.name LIKE '%K%'
+		AND s.name NOT LIKE 'K%'
+ORDER BY a.name;
+
+-- Region for every order, unit price and account name for standard_qty over 100
+SELECT r.name region, a.name account, 
+           o.total_amt_usd/(o.total + 0.01) unit_price
+    FROM region r
+    JOIN sales_reps s
+        ON s.region_id = r.id
+    JOIN accounts a
+        ON a.sales_rep_id = s.id
+    JOIN orders o
+        ON o.account_id = a.id
+    WHERE o.standard_qty > 100;
+    
+-- Region for every order, unit price and account name for standard_qty over 100 and poster_qty over 50 sorted ascending by unit price
+SELECT r.name region, a.name account, 
+           o.total_amt_usd/(o.total + 0.01) unit_price
+    FROM region r
+    JOIN sales_reps s
+        ON s.region_id = r.id
+    JOIN accounts a
+        ON a.sales_rep_id = s.id
+    JOIN orders o
+        ON o.account_id = a.id
+    WHERE o.standard_qty > 100
+    	AND o.poster_qty > 50
+ORDER BY unit_price;
+        
+-- Region for every order, unit price and account name for standard_qty over 100 and poster_qty over 50, sorted descendingly
+SELECT r.name region, a.name account, 
+           o.total_amt_usd/(o.total + 0.01) unit_price
+    FROM region r
+    JOIN sales_reps s
+        ON s.region_id = r.id
+    JOIN accounts a
+        ON a.sales_rep_id = s.id
+    JOIN orders o
+        ON o.account_id = a.id
+    WHERE o.standard_qty > 100
+    	AND o.poster_qty > 50
+ORDER BY unit_price DESC;
+
+-- Unique channels used by account id 1001
+SELECT DISTINCT a.name Account, w.channel Channel
+	FROM accounts a
+    JOIN web_events w
+    	ON a.id = w.account_id
+    AND a.id = 1001;
+    
+-- All orders from 2015
+SELECT o.occurred_at, o.total, o.total_amt_usd Amount, a.name Account
+	FROM orders o
+    JOIN accounts a
+    	ON a.id = o.account_id
+    WHERE o.occurred_at BETWEEN '2015-01-01' AND '2016-01-01';
