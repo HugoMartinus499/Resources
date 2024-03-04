@@ -30,6 +30,9 @@
 -- MIN and MAX can be used on all operators, it returns lowest or highest numeric value, earliest or latest date and closest to A in the alphabet or closest to Z in the alphabet
 -- AVG function ignores NULLs, so if NULLS need to be 0, the average must be hardcoded using arithmetic and SUM and COUNT
 -- Mean is calculated in SQL using the AVG function, Mode and Median is a bit tricky
+-- GROUP BY can be used to aggregate data within subsets of the data. For example, grouping for different accounts, different regions, or different sales representatives
+-- The GROUP BY always goes between WHERE and ORDER BY.
+-- Any column in the SELECT statement that is not within an aggregator must be in the GROUP BY clause.
 
 -- CODING Examples --
 -- SQL Basics
@@ -338,3 +341,93 @@ SELECT standard_amt_usd + gloss_amt_usd AS total_standard_gloss
  -- avg standard unit price
 SELECT SUM(standard_amt_usd) / SUM(standard_qty) AS standard_amt_per_unit
 	FROM orders;
+
+-- Earliest order placest
+SELECT MIN(occurred_at) AS earliest_order
+	FROM orders;
+ 
+-- Earliest order without aggregation
+SELECT occurred_at
+	FROM orders
+    ORDER BY occurred_at ASC;
+    
+-- Latest webevent
+SELECT MAX(occurred_at) AS latest_webevent
+	FROM web_events;
+
+-- Latest webevent without aggregate
+SELECT occurred_at
+	FROM web_events
+    ORDER BY occurred_at DESC;
+    
+-- Average amount spent per order of each paper type as well as average amount of each papertype purchased per order
+SELECT AVG(standard_qty) mean_standard, AVG(gloss_qty) mean_gloss, 
+              AVG(poster_qty) mean_poster, AVG(standard_amt_usd) mean_standard_usd, 
+              AVG(gloss_amt_usd) mean_gloss_usd, AVG(poster_amt_usd) mean_poster_usd
+    FROM orders;
+
+-- Median total_usd spent on all orders (Hardcoded as median is out of scope for now)
+SELECT *
+    FROM (SELECT total_amt_usd
+         FROM orders
+         ORDER BY total_amt_usd
+         LIMIT 3457) AS Table1
+    ORDER BY total_amt_usd DESC
+LIMIT 2;
+-- Since there are 6912 orders - we want the average of the 3457 and 3456 order amounts when ordered. 
+-- This is the average of 2483.16 and 2482.55. This gives the median of 2482.855.
+-- This obviously isn't an ideal way to compute. If we obtain new orders, we would have to change the limit. 
+-- SQL didn't even calculate the median for us. 
+-- The above used a SUBQUERY, but you could use any method to find the two necessary values, and then you just need the average of them.
+
+-- Account placing the earliest order
+SELECT a.name, o.occurred_at
+    FROM accounts a
+    JOIN orders o
+        ON a.id = o.account_id
+    ORDER BY occurred_at
+LIMIT 1;
+
+-- Total sales of each account
+SELECT a.name, SUM(total_amt_usd) total_sales
+    FROM orders o
+    JOIN accounts a
+        ON a.id = o.account_id
+    GROUP BY a.name;
+
+-- Channel and account of latest web event
+SELECT w.occurred_at, w.channel, a.name
+    FROM web_events w
+    JOIN accounts a
+        ON w.account_id = a.id 
+    ORDER BY w.occurred_at DESC
+LIMIT 1;
+
+-- Total number of times each channel for web events was used
+SELECT w.channel, COUNT(*)
+    FROM web_events w
+    GROUP BY w.channel
+
+-- Primary contact associated with earliest web event
+SELECT a.primary_poc
+    FROM web_events w
+    JOIN accounts a
+        ON a.id = w.account_id
+    ORDER BY w.occurred_at
+LIMIT 1;
+
+-- Smallest order placed by each account
+SELECT a.name, MIN(total_amt_usd) smallest_order
+    FROM accounts a
+    JOIN orders o
+        ON a.id = o.account_id
+    GROUP BY a.name
+    ORDER BY smallest_order;
+
+-- Number of sales reps in each region
+SELECT r.name, COUNT(*) num_reps
+    FROM region r
+    JOIN sales_reps s
+        ON r.id = s.region_id
+    GROUP BY r.name
+    ORDER BY num_reps;
