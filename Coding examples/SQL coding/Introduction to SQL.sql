@@ -33,6 +33,9 @@
 -- GROUP BY can be used to aggregate data within subsets of the data. For example, grouping for different accounts, different regions, or different sales representatives
 -- The GROUP BY always goes between WHERE and ORDER BY.
 -- Any column in the SELECT statement that is not within an aggregator must be in the GROUP BY clause.
+-- DISTINCT can be used instead of COUNT and the GROUP BY clause. It works like Number of Unique. NOTE: it can slow down the query significantly when using aggregation
+-- HAVING is used as an alternative to the WHERE clause, when filtering on a part of the query that has been created using an aggregate
+-- HAVING goes between the GROUP BY and ORDER BY clauses
 
 -- CODING Examples --
 -- SQL Basics
@@ -431,3 +434,169 @@ SELECT r.name, COUNT(*) num_reps
         ON r.id = s.region_id
     GROUP BY r.name
     ORDER BY num_reps;
+
+-- Avg amount of each paper type for each account
+SELECT a.name, AVG(o.standard_qty) avg_stand, AVG(o.gloss_qty) avg_gloss, AVG(o.poster_qty) avg_post
+	FROM accounts a
+	JOIN orders o
+			ON a.id = o.account_id
+	GROUP BY a.name;
+    
+-- Avg amount spent on each paper type per order for each account
+SELECT a.name, AVG(o.standard_amt_usd) avg_stand, AVG(o.gloss_amt_usd) avg_gloss, AVG(o.poster_amt_usd) avg_post
+	FROM accounts a
+	JOIN orders o
+		ON a.id = o.account_id
+	GROUP BY a.name;
+
+-- Number of times a channel was used for each sales rep sorted descending
+SELECT s.name, w.channel, COUNT(*) num_events
+	FROM accounts a
+    JOIN web_events w
+    	ON a.id = w.account_id
+    JOIN sales_reps s
+    	ON a.sales_rep_id = s.id
+    GROUP BY s.name, w.channel
+    ORDER BY num_events DESC;
+    
+-- Number of times a channel was used for each region sorted descending
+SELECT r.name AS region, w.channel, COUNT(*) num_events
+		FROM accounts a
+    JOIN web_events w
+    	ON a.id = w.account_id
+    JOIN sales_reps s
+    	ON a.sales_rep_id = s.id
+    JOIN region r
+    	ON s.region_id = r.id
+    GROUP BY region, w.channel
+    ORDER BY num_events DESC;
+
+-- Using DISTINCT to see if any accounts are associated with more than one region
+SELECT a.id as "account id", r.id as "region id", 
+a.name as "account name", r.name as "region name"
+	FROM accounts a
+	JOIN sales_reps s
+		ON s.id = a.sales_rep_id
+	JOIN region r
+		ON r.id = s.region_id;
+
+SELECT DISTINCT id, name
+	FROM accounts; 
+-- Both return 351 rows, meaning that no accounts are associated with more than one region
+
+-- Sales reps working on more than one account
+SELECT s.id, s.name, COUNT(*) num_accounts
+	FROM accounts a
+    JOIN sales_reps s
+    	ON a.sales_rep_id = s.id
+    GROUP BY s.id, s.name
+    ORDER BY num_accounts;
+    
+SELECT DISTINCT id, name
+FROM sales_reps;
+-- 50 sales reps
+
+-- Sales reps having more than 5 accounts sorted descending
+SELECT s.name, COUNT(*) num_accounts
+	FROM sales_reps s
+    JOIN accounts a
+    	ON s.id = a.sales_rep_id
+    GROUP BY s.name
+    HAVING COUNT(*) > 5
+    ORDER BY num_accounts DESC; -- 34 salesreps
+
+-- Using subquery for the above question
+SELECT COUNT(*) num_reps_above5
+	FROM(SELECT s.id, s.name, COUNT(*) num_accounts
+        FROM accounts a
+        JOIN sales_reps s
+        	ON s.id = a.sales_rep_id
+        GROUP BY s.id, s.name
+        HAVING COUNT(*) > 5
+        ORDER BY num_accounts) AS Table1;
+    
+-- Accounts with more than 20 orders sorted descending
+SELECT a.name, COUNT(*) num_orders
+	FROM accounts a
+    JOIN orders o
+    	ON a.id = o.account_id
+    GROUP BY a.name
+    HAVING COUNT(*) > 20
+    ORDER BY num_orders DESC; -- 120 accounts
+    
+-- account with most orders
+-- Using same query as before sorted descendingly "Leucadia National" has the most with 71 orders
+-- Using a different query to only show the the account with the most orders
+SELECT a.id, a.name, COUNT(*) num_orders
+	FROM accounts a
+	JOIN orders o
+		ON a.id = o.account_id
+	GROUP BY a.id, a.name
+	ORDER BY num_orders DESC
+LIMIT 1;
+
+-- Accounts spending more than 30k USD across all orders
+SELECT a.name, SUM(o.total_amt_usd) total_spenditure
+	FROM accounts a
+    JOIN orders o
+    	ON a.id = o.account_id
+    GROUP BY a.name
+    HAVING SUM(total_amt_usd)>30000
+    ORDER BY total_spenditure DESC;
+    
+-- Account with under 1k USD across all orders
+SELECT a.name, SUM(o.total_amt_usd) total_spenditure
+	FROM accounts a
+    JOIN orders o
+    	ON a.id = o.account_id
+    GROUP BY a.name
+    HAVING SUM(total_amt_usd)<1000
+    ORDER BY total_spenditure;
+    
+-- Account spending the most
+SELECT a.name, SUM(o.total_amt_usd) total_spenditure
+	FROM accounts a
+    JOIN orders o
+    	ON a.id = o.account_id
+    GROUP BY a.name
+    ORDER BY total_spenditure DESC
+LIMIT 1;
+
+-- Account spending the least
+SELECT a.name, SUM(o.total_amt_usd) total_spenditure
+	FROM accounts a
+    JOIN orders o
+    	ON a.id = o.account_id
+    GROUP BY a.name
+    ORDER BY total_spenditure
+LIMIT 1;
+
+-- Accounts using facebook as a channel to contact customers more than 6 times
+SELECT a.name, w.channel, COUNT(*) num_contacts
+	FROM accounts a
+    JOIN web_events w
+    	ON a.id = w.account_id
+    GROUP BY a.name, w.channel
+    HAVING w.channel = 'facebook' 
+    	AND COUNT(*) > 6
+    ORDER BY num_contacts DESC;
+    
+-- Account using facebook the most
+SELECT a.name, w.channel, COUNT(*) num_contacts
+	FROM accounts a
+    JOIN web_events w
+    	ON a.id = w.account_id
+    GROUP BY a.name, w.channel
+    HAVING w.channel = 'facebook' 
+    	AND COUNT(*) > 6
+    ORDER BY num_contacts DESC
+LIMIT 1;
+
+-- Channel most frequently used
+SELECT a.name, w.channel, COUNT(*) num_contacts
+	FROM accounts a
+    JOIN web_events w
+    	ON a.id = w.account_id
+    GROUP BY a.name, w.channel
+    ORDER BY num_contacts DESC
+LIMIT 10;
