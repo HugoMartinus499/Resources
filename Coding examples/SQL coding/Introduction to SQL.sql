@@ -39,6 +39,10 @@
 -- DATE_TRUNC allows you to truncate your date to a particular part of your date-time column. Common trunctions are day, month, and year. 
 -- DATE_PART can be useful for pulling a specific portion of a date, but notice pulling month or day of the week (dow) means that you are no longer keeping the years in order. Rather you are grouping for certain components regardless of which year they belonged in.
 -- GROUP BY and ORDER BY clauses can reference the columns in the SELECT statement with numbers that follow the order they appear in, in the SELECT statement
+-- CASE statements work as ifelse, they follow the syntax: CASE WHEN {event} THEN {outcome} ELSE {different outcome} and must end with END
+-- The ELSE statement is optional and when not used, returns NULL
+-- CASE statements can be stacked, so as many as you would liked can be used in conjunction before ending with END
+-- CASE statements can be used with conditional operators like WHERE, AND and OR
 
 
 -- CODING Examples --
