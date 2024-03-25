@@ -8,7 +8,9 @@ Additionally it includes install guides, with code.
 An effort is made to keep code as commentated and readable as possible, to help with understanding and making it easier to follow.
 
 Currently, the repo has examples of programming in the following languages:
+
 R
+
 SQL
 
 ## Cmdstan install order
