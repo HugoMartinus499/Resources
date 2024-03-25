@@ -600,3 +600,52 @@ SELECT a.name, w.channel, COUNT(*) num_contacts
     GROUP BY a.name, w.channel
     ORDER BY num_contacts DESC
 LIMIT 10;
+
+-- Total sales per year
+SELECT DATE_PART('year', occurred_at) ord_year,  SUM(total_amt_usd) total_spent
+	FROM orders
+	GROUP BY 1
+	ORDER BY 2 DESC;
+-- The sales increase every year, except for 2017, ehich might be due to the year not being finished in the dataset. 2013 and 2017 have less months available, only month 12 for 2013 and month 1 for 2017.
+
+-- Total sales per month
+SELECT DATE_PART('month', occurred_at) ord_month,  SUM(total_amt_usd) total_spent
+	FROM orders
+	WHERE occurred_at BETWEEN '2014-01-01' AND '2017-01-01'
+	GROUP BY 1
+	ORDER BY 2 DESC;
+-- Removed 2013 and 2017 as they each add one extra entry on either side of the scale. Month twelve has the highest revenue.
+
+-- Total number of orders per year
+SELECT DATE_PART('year', occurred_at) ord_year, COUNT(*) num_orders
+	FROM orders	
+    GROUP BY 1
+    ORDER BY 2 DESC;
+-- 2013 and 2017 ave only one month each, so they should be out
+
+-- Total number of order per year excl. 2013 and 2017
+SELECT DATE_PART('year', occurred_at) ord_year, COUNT(*) num_orders
+	FROM orders	
+    WHERE occurred_at BETWEEN '2014-01-01' AND '2017-01-01'
+    GROUP BY 1
+    ORDER BY 2 DESC;
+-- 2016 has the most orders
+
+-- Total order per month excl 2013 and 2017
+SELECT DATE_PART('month', occurred_at) ord_month, COUNT(*) num_orders
+	FROM orders	
+    WHERE occurred_at BETWEEN '2014-01-01' AND '2017-01-01'
+    GROUP BY 1
+    ORDER BY 2 DESC;
+-- Excluding 2013 and 2017, month 12 has the most orders
+
+-- Month and year that Walmart spend most on gloss paper
+SELECT DATE_TRUNC('month', o.occurred_at) ord_date, SUM(o.gloss_amt_usd) tot_spent
+	FROM orders o 
+	JOIN accounts a
+		ON a.id = o.account_id
+	WHERE a.name = 'Walmart'
+	GROUP BY 1
+	ORDER BY 2 DESC
+LIMIT 1;
+-- May 2016
