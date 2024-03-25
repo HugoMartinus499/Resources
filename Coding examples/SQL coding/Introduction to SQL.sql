@@ -36,6 +36,10 @@
 -- DISTINCT can be used instead of COUNT and the GROUP BY clause. It works like Number of Unique. NOTE: it can slow down the query significantly when using aggregation
 -- HAVING is used as an alternative to the WHERE clause, when filtering on a part of the query that has been created using an aggregate
 -- HAVING goes between the GROUP BY and ORDER BY clauses
+-- DATE_TRUNC allows you to truncate your date to a particular part of your date-time column. Common trunctions are day, month, and year. 
+-- DATE_PART can be useful for pulling a specific portion of a date, but notice pulling month or day of the week (dow) means that you are no longer keeping the years in order. Rather you are grouping for certain components regardless of which year they belonged in.
+-- GROUP BY and ORDER BY clauses can reference the columns in the SELECT statement with numbers that follow the order they appear in, in the SELECT statement
+
 
 -- CODING Examples --
 -- SQL Basics
