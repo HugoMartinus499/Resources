@@ -65,3 +65,72 @@ reservoir_volume -= 2.5e5
 print(reservoir_volume)
 
 
+# Integers and floats
+    # Integers are whole numbers
+    # Floats are decimal numbers
+    # Both are data types, every object has a type in python
+    # The type of an object can be check with the built-in function "type"
+    # Converting a float to an interger using int in the print function, it cuts of the number after the decimal point, meaning no rounding
+
+# Best practices for python coding: https://peps.python.org/pep-0008/
+
+# Booleans, comparison operators and logical operators
+    # Booleans are True or False
+    # Comparison operators are >,<,==,!=, >=, <=
+    # Logical operators are "and", "or", "not"
+    
+## Code with comments
+sf_population, sf_area = 864816, 231.89
+rio_population, rio_area = 6453682, 486.5
+
+san_francisco_pop_density = sf_population/sf_area
+rio_de_janeiro_pop_density = rio_population/rio_area
+
+# Write code that prints True if San Francisco is denser than Rio, and False otherwise
+print(san_francisco_pop_density > rio_de_janeiro_pop_density)
+
+# Alternative solution using if statement, however, the one above is more concise and efficient
+if (san_francisco_pop_density > rio_de_janeiro_pop_density):
+    print (True)
+else:
+    print (False)
+
+# Strings
+    # String are an immutable ordered series of characters
+    # Can be created using quotes, both double and single work
+    # If needing to make a quote within a quote, use double for one and single the other
+    # If both are used, make a \ before the quote within the string to get around syntax error
+    # Strings can be added or multiplied, but spaces need to be explicit in a string like " "
+    # The function len can be used to check the length of a string
+    
+#Code with comments
+# TODO: Fix this string!
+ford_quote = "Whether you think you can, or you think you can't--you're right."
+
+username = "Kinari"
+timestamp = "04:50"
+url = "http://petshop.com/pets/mammals/cats"
+
+# TODO: print a log message using the variables above.
+# The message should have the same format as this one:
+# "Yogesh accessed the site http://petshop.com/pets/reptiles/pythons at 16:20."
+
+print (username + " accessed the site " + url + " at " + timestamp + ".")
+
+# OR
+
+message = username + " accessed the site " + url + " at " + timestamp + "."
+print(message)
+
+# length
+given_name = "William"
+middle_names = "Bradley"
+family_name = "Pitt"
+
+name_length = len(given_name) + len(middle_names) + len(family_name) +2 #todo: calculate how long this name is
+
+# Now we check to make sure that the name fits within the driving license character limit
+# Nothing you need to do here
+driving_license_character_limit = 28
+print(name_length <= driving_license_character_limit)
+    
