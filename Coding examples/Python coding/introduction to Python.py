@@ -133,4 +133,39 @@ name_length = len(given_name) + len(middle_names) + len(family_name) +2 #todo: c
 # Nothing you need to do here
 driving_license_character_limit = 28
 print(name_length <= driving_license_character_limit)
+
+## Type and type conversion
+    # Paranthesis determine order that functions are run, eg. print(type(633))
+    # Each data type has different functions
+    # Types can be changed using type change functions
+    
+# Calculate total weekly sales and display it
+# My solution (spelt out)
+
+mon_sales = "121"
+tues_sales = "105"
+wed_sales = "110"
+thurs_sales = "98"
+fri_sales = "95"
+
+#TODO: Print a string with this format: This week's total sales: xxx
+# You will probably need to write some lines of code before the print statement.
+
+statement = "This week's total sales:" # write statement for print function
+
+# Convert all sales from string to integer
+mon_sales = int(mon_sales) 
+tues_sales = int(tues_sales)
+wed_sales = int(wed_sales)
+thurs_sales = int(thurs_sales)
+fri_sales = int(fri_sales)
+    
+total_sales = mon_sales + tues_sales + wed_sales + thurs_sales + fri_sales # Add sales together
+
+print(statement + " " + str(total_sales)) # Print statement + space + total sales as str
+
+# Alternative solution in less code
+weekly_sales = int(mon_sales) + int(tues_sales) + int(wed_sales) + int(thurs_sales) + int(fri_sales)
+weekly_sales = str(weekly_sales)  #convert the type back!!
+print("This week's total sales: " + weekly_sales)
     
