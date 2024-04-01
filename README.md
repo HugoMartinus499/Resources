@@ -13,6 +13,8 @@ Currently, the repo has examples of programming in the following languages:
 
 - *SQL*
 
+- *Python*
+
 ## Helpful links
 
 ### Cmdstan install order
