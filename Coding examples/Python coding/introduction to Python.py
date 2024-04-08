@@ -227,3 +227,33 @@ last_idx = verse.rfind('you')
 count = verse.count('you')
 
 print(message.format(length, first_idx, last_idx, count))
+
+## Data Structures
+    # Lists: Mutable ordered sequence of elements, defined using [] and separated by commas
+    # Slicing is accessing a subset of a list, using [:], the lower bound is inclusive while the upper bound is exclusive
+    # Membership operators evaluate the membership of the statement to the left relative to the statement of the right
+        #Example. In, 'her' in "Hello There"
+    # List can hold any type of object, lists can be changed by index, meaning it is mutable
+    # Mutability is the ability to change the object
+    # Ordered is when an object has a specific order. Meaning that the position of an element can be used to access it
+    
+## Code
+
+# Indexing month
+month = 8
+days_in_month = [31,28,31,30,31,30,31,31,30,31,30,31]
+
+# use list indexing to determine the number of days in month
+num_days = days_in_month[month - 1]
+
+print(num_days)
+
+#Slicing recent dates
+eclipse_dates = ['June 21, 2001', 'December 4, 2002', 'November 23, 2003',
+                 'March 29, 2006', 'August 1, 2008', 'July 22, 2009',
+                 'July 11, 2010', 'November 13, 2012', 'March 20, 2015',
+                 'March 9, 2016']
+                 
+                 
+# TODO: Modify this line so it prints the last three elements of the list
+print(eclipse_dates[-3:])
