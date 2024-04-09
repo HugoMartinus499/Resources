@@ -315,5 +315,22 @@ print("The dimensions are {} x {} x {}".format(length, width, height))
 length, width, height = 52, 40, 100
 print("The dimensions are {} x {} x {}".format(length, width, height))
 
+## Data structures
+    # Sets: A datatype for mutable unordered collections of unique elements
+    # Set removes the duplicates of a list
+    # supports the in method
+    # uses add method instead of append()
+    # Defined using {} and seperated by commas
+    # pop() removes random element, as sets are unordered
+    # Example:
 
+fruit = {"apple", "banana", "orange", "grapefruit"}  # define a set
+
+print("watermelon" in fruit)  # check for element
+
+fruit.add("watermelon")  # add an element
+print(fruit)
+
+print(fruit.pop())  # remove a random element
+print(fruit)
     
