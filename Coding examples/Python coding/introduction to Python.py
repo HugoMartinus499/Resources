@@ -257,3 +257,45 @@ eclipse_dates = ['June 21, 2001', 'December 4, 2002', 'November 23, 2003',
                  
 # TODO: Modify this line so it prints the last three elements of the list
 print(eclipse_dates[-3:])
+
+
+## List functions
+    # len() gives the length of the list, ie. how many elements are in the list
+    # max() gives the greatest element, meaning highest number, last element in alphabetical order (Largest letter)
+    # max() can't be used on lists with different data types like int or str
+    # min() is the opposite of max and returns the smallest element
+    # sorted() returns the complete list, but it is ordered from smallest to largest
+    # sorted() can return largest to smallest using reverse = True
+    # join() is a string method that takes a list of strings as an argument, and returns a string consisting of the list elements joined by a separator string.
+    # join() can only be used on lists with strings
+    # append() adds elements to the end of a list
+    
+## Code
+# Finding the max and minumum lengths of three lists
+a = [1, 5, 8]
+b = [2, 6, 9, 10]
+c = [100, 200]
+
+print(max([len(a), len(b), len(c)]))
+print(min([len(a), len(b), len(c)]))
+
+# Joining and sorting strings in a list
+names = ["Carol", "Albert", "Ben", "Donna"]
+print(" & ".join(sorted(names)))
+
+# Appending an element and sorting a list of strings
+names = ["Carol", "Albert", "Ben", "Donna"]
+names.append("Eugenia")
+print(sorted(names))
+
+# Indexing and slicing a list
+arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+
+print(arr[0]) # First element
+print(arr[3]) # Fourth element
+print(arr[len(arr) - 1]) # Last element
+print(arr[-2]) # Second to last element
+
+print(arr[2:6]) # c, d, e, f
+print(arr[:3]) # a, b, c
+print(arr[4:]) # e, f, g
