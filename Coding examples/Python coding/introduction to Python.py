@@ -299,3 +299,21 @@ print(arr[-2]) # Second to last element
 print(arr[2:6]) # c, d, e, f
 print(arr[:3]) # a, b, c
 print(arr[4:]) # e, f, g
+
+## Data structures
+    # Tuples: immutable ordered sequences of elements
+    # Used to store related information, that will always be used together like latitude and longitude
+    # Paranthesis are not necessary when defining tuples
+    # Tuple unpacking is assigning elements of a tuple to different variables at once, like this: 
+
+dimensions = 52, 40, 100
+length, width, height = dimensions
+print("The dimensions are {} x {} x {}".format(length, width, height))
+
+    # If we don't need dimension directly, we can omit it and just assign the values directly:
+
+length, width, height = 52, 40, 100
+print("The dimensions are {} x {} x {}".format(length, width, height))
+
+
+    
