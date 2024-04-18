@@ -302,6 +302,7 @@ print(arr[4:]) # e, f, g
 
 ## Data structures
     # Tuples: immutable ordered sequences of elements
+    # Can be sliced and indexed like a list
     # Used to store related information, that will always be used together like latitude and longitude
     # Paranthesis are not necessary when defining tuples
     # Tuple unpacking is assigning elements of a tuple to different variables at once, like this: 
@@ -318,7 +319,7 @@ print("The dimensions are {} x {} x {}".format(length, width, height))
 ## Data structures
     # Sets: A datatype for mutable unordered collections of unique elements
     # Set removes the duplicates of a list
-    # supports the in method
+    # supports the 'in' method
     # uses add method instead of append()
     # Defined using {} and seperated by commas
     # pop() removes random element, as sets are unordered
@@ -334,3 +335,85 @@ print(fruit)
 print(fruit.pop())  # remove a random element
 print(fruit)
     
+## Data structures
+    # Dictonaries is a mutable data type that stores mappings of unique keys to values. Here's a dictionary that stores elements and their atomic numbers.
+    # Get can be used to find keys in the dictonaries
+    # identity operators like is and is not can be used to check if a key returns eg. none or the opposite
+    
+elements = {"hydrogen": 1, "helium": 2, "carbon": 6}
+
+print(elements["helium"])  # print the value mapped to "helium"
+elements["lithium"] = 3  # insert "lithium" with a value of 3 into the dictionary
+
+print("carbon" in elements)
+print(elements.get("dilithium"))
+
+n = elements.get("dilithium")
+print(n is None)
+print(n is not None)
+
+# Define a Dictionary, population,
+# that provides information
+# on the world's largest cities.
+# The key is the name of a city
+# (a string), and the associated
+# value is its population in
+# millions of people.
+
+#   Key     |   Value
+# Shanghai  |   17.8
+# Istanbul  |   13.3
+# Karachi   |   13.0
+# Mumbai    |   12.5
+
+population = {'Shanghai': 17.8, 'Istanbul': 13.3, 'Karachi': 13.0, 'Mumbai': 12.5}
+
+# Printing some statements to explore
+print(population)
+print(population['Istanbul'])
+print('Shanghai' in population)
+print(population.get('Copenhagen'))
+print(population['Amsterdam']) # Results in KeyError
+
+# Checking equality and identity operators
+a = [1, 2, 3]
+b = a
+c = [1, 2, 3]
+
+print(a == b) # True
+print(a is b) # True
+print(a == c) # True
+print(a is c) # False
+
+animals = {'dogs': [20, 10, 15, 8, 32, 15], 
+ 'cats': [3,4,2,8,2,4], 
+ 'rabbits': [2, 3, 3], 
+ 'fish': [0.3, 0.5, 0.8, 0.3, 1]}
+ 
+print(animals['dogs'])
+print(animals['dogs'][3])
+print(animals[3]) # Error due to not defined
+print(animals['fish'])
+
+# Index fund of stocks and their returnrate and YTD returnrate
+
+VINIX = {'C': [0.74, -6.51],  'MA': [0.78, 34.77],  'BA': [0.79, 17.01],  'PG': [0.85, -8.81],  'CSCO': [0.88, 18.56],  'VZ': [0.9, 2.16],  'PFE': [0.92, 13.96],  'HD': [0.97, 3.2],  
+         'INTC': [1.0, 2.61],  'T': [1.01, -15.19],  'V': [1.02, 24.0],  'UNH': [1.02, 19.32],  'WFC': [1.05, -3.59],  'CVX': [1.05, -5.77],  'BAC': [1.15, 4.27],  'JNJ': [1.41, -5.58],  
+         'GOOGL': [1.46, 17.84],  'GOOG': [1.47, 17.03],  'BRK.B': [1.5, 4.54],  'XOM': [1.52, -6.87],  'JPM': [1.53, 7.66],  'FB': [2.02, 0.91], 'AMZN': [2.96, 62.75], 'MSFT': [3.28, 26.61], 'AAPL': [3.94, 26.01]}
+
+
+# invalid dictionary - this should break
+room_numbers = {
+    ['Freddie', 'Jen']: 403,
+    ['Ned', 'Keith']: 391,
+    ['Kristin', 'Jazzmyne']: 411,
+    ['Eugene', 'Zach']: 395
+} # Error is that keys are lists and that cannot be, as a list is mutable
+
+#Fix
+room_numbers = {
+    'Freddie': 403, 'Jen': 403,
+    'Ned': 391, 'Keith': 391,
+    'Kristin': 411, 'Jazzmyne': 411,
+    'Eugene': 395, 'Zach': 395
+}
