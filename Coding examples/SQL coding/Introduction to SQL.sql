@@ -43,6 +43,10 @@
 -- The ELSE statement is optional and when not used, returns NULL
 -- CASE statements can be stacked, so as many as you would liked can be used in conjunction before ending with END
 -- CASE statements can be used with conditional operators like WHERE, AND and OR
+-- Subquerys are tools for performing operations in multiple steps
+-- Subquerys need to have aliases, which are added after the parenthesis
+-- Use identation to make the querys easier to read, especially as they get progressively more complex
+-- Subquerys can be used anywhere a table name might be used
 
 
 -- CODING Examples --
@@ -739,3 +743,43 @@ SELECT s.name, COUNT(*) num_ords, SUM(o.total_amt_usd) total,
 		ON s.id = a.sales_rep_id
 	GROUP BY s.name
 	ORDER BY 3 DESC;
+
+-- Subquerys and temporary tables
+
+-- Number of events for each day for each channel. 
+SELECT DATE_TRUNC('day', occurred_at) AS day, 
+    channel, 
+    COUNT(*) AS event_count
+        FROM web_events
+        GROUP BY 1,2
+        ORDER BY event_count DESC;
+
+-- subquery returning output of first query
+SELECT *
+    FROM 
+    (SELECT DATE_TRUNC('day', occurred_at) AS day, channel, COUNT(*) AS event_count
+        FROM web_events
+        GROUP BY 1,2
+        ORDER BY event_count DESC) sub;
+
+-- Average number of events for each day for each channel
+SELECT channel, AVG(event_count) AS avg_event_count
+    FROM 
+    (SELECT DATE_TRUNC('day', occurred_at) AS day, channel, COUNT(*) AS event_count
+        FROM web_events
+        GROUP BY 1,2) sub
+        GROUP BY 1
+    ORDER BY 2 DESC;
+-- Breaking out by day in the first query makes the subquery give average for each day
+
+-- The average amount of each papertype sold on the first month that any order was placed in the orders table (in terms of quantity)
+SELECT AVG(standard_qty) avg_std, AVG(gloss_qty) avg_gls, AVG(poster_qty) avg_pst
+FROM orders
+WHERE DATE_TRUNC('month', occurred_at) = 
+     (SELECT DATE_TRUNC('month', MIN(occurred_at)) FROM orders);
+
+-- The total amount spent on all orders on the first month that any order was placed in the orders table (in terms of usd).
+SELECT SUM(total_amt_usd)
+FROM orders
+WHERE DATE_TRUNC('month', occurred_at) = 
+      (SELECT DATE_TRUNC('month', MIN(occurred_at)) FROM orders);
