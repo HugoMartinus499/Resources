@@ -498,6 +498,8 @@ print(sorted_keys[-1])
 
 ## Control flow
 # An if statement is a conditional statement that runs or skips code based on whether a condition is true or false. Here's a simple example.
+phone_balance = 19
+bank_balance = 250
     
 if phone_balance < 5:
     phone_balance += 10
@@ -505,7 +507,7 @@ if phone_balance < 5:
     
 # Use comparison operators for conditional statements
 # In addition to the if clause, there are two other optional clauses often used with an if statement. For example:
-
+season = 'summer'
 if season == 'spring':
     print('plant the garden!')
 elif season == 'summer':
@@ -627,5 +629,71 @@ elif state == "NY":
     tax_amount = .089
     total_cost = purchase_amount*(1+tax_amount)
     result = "Since you're from {}, your total cost is {}.".format(state, total_cost)
+
+print(result)
+
+# Boolean expressions for conditions
+height = 185
+weight = 82
+
+is_raining = True
+is_sunny = False
+
+unsubscribed = True
+location = "USA"
+
+if 18.5 <= weight / height**2 < 25:
+    print("BMI is considered 'normal'")
+
+if is_raining and is_sunny:
+    print("Is there a rainbow?")
+
+if (not unsubscribed) and (location == "USA" or location == "CAN"):
+    print("send email")
+    
+# Sometimes and, or and not is necessary depending on complexity. Even sometimes combined
+
+# Bad examples of boolean expressions for conditionals
+
+if True:
+    print("This indented code will always get run.") # True or False is a bad example of a boolean for conditional
+    
+if is_cold or not is_cold:
+    print("This indented code will always get run.") # Bad example
+    
+if weather == "snow" or "rain":
+    print("Wear boots!") # Only one is a boolean operator
+    
+if is_cold == True:
+    print("The weather is cold!") # Boolean unecessary as a boolean variable is a boolean expression
+    
+# Using a non-boolean object as a condition, makes python check the truth value
+errors = 3
+if errors:
+    print("You have {} errors to fix!".format(errors))
+else:
+    print("No errors to fix!") # This runs, because errors is a non-zero number
+    
+# assigning value to a None variable
+points = 174
+
+points = 174  # use this input when submitting your answer
+
+## set prize to default value of None
+prize = None
+
+## use the value of points to assign prize to the correct prize name
+if points <= 50:
+    prize = "wooden rabbit"
+elif 151 <= points <= 180:
+    prize = "wafer-thin mint"
+elif points >= 181:
+    prize = "penguin"
+
+## use the truth value of prize to assign result to the correct message
+if prize:
+    result = "Congratulations! You won a {}!".format(prize)
+else:
+    result = "Oh dear, no prize this time."
 
 print(result)
