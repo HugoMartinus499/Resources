@@ -1,0 +1,256 @@
+---
+title: 'Text as data: Exercises'
+author: "Klara Krøyer Fomsgaard"
+date: "2024-03-03"
+output: html_document
+---
+#### Setup
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Introduction
+Today, we'll look at text as data. We use a dataset from Kaggle, which contains lyrics from various artists' entire discography (https://www.kaggle.com/datasets/deepshah16/song-lyrics-dataset). 
+
+We use the tutorial from https://www.tidytextmining.com/ as our starting point, which has a nice introduction to both sentiment analysis and topic modeling in R. The header numbers in this markdown matches the corresponding chapter, so feel free to use the book for coding examples as you go along.
+
+*In this notebook we will look at*:
+ 1. How to convert data into tidytext format
+      1.1 Looking at one song
+      1.2 Counting word frequency for all songs
+ 2. Sentiment analysis
+      2.1 Looking at different sentiment lexicons
+      2.2 Sentiment of songs 
+      2.3 RQ: Are some songs more negative in their lyrics than others?
+      2.4 RQ: Does sentiment change over time?
+ 3. Basic topic 'modeling'  
+      3.1 Calculating TF-IDF
+      3.2 RQ: What topics can we identify from the different songs?
+ 
+
+*Extra things* to do which are not covered in this note but are interesting to look at:
+    1. Calculate cosine similarity between TD-IDF values for different artists 
+          - How similar are artists use of words? 
+          - If we assume that artist who are similar will have a higher tendency to collaborate, who is most likely to create a song together?
+    2. Fit a topic model using LDA (see tidytextmining.com)
+
+
+NB: If you are interested in working with lyrics, it is possible to access information on genius.com through their own API, see: https://github.com/AlbertoAlmuinha/rgenius/blob/master/R/get_genius_song_lyrics.R 
+
+
+#### Load packages
+```{r}
+pacman::p_load(tidyverse,  
+               tidytext, # Contains the packages we need for word with textdata in tidyverse
+               textdata  # This package contains the dictionaries used for sentiment analysis
+               )
+```
+
+#### Load data
+```{r}
+JB_lyrics <- read_csv('lyrics_artists/JustinBieber.csv')
+```
+
+
+
+#### 1. Convert data into tidytext format (Chapter 1)
+We first need to convert the data into a format that can be used for topic modeling and sentiment analysis. We can use the *unnest_tokens()* function to rearrange the dataframe into a long format.
+
+##### 1.1 Looking at one song
+
+*TODO:* 
+  - Try to: Select one song and convert it into a long format using *unnest_tokens()*
+  - Think about: How has the format changed after convertion?
+  
+```{r}
+#select Habitual
+JB_habitual <- JB_lyrics %>% 
+  filter(Title == "Habitual")
+
+#Convert to long format
+JB_habitual_long <- JB_habitual %>% 
+  unnest_tokens(word, Lyric)
+```
+
+
+##### 1.2 Summary statistics for all songs
+Now, let's look at all songs and get some summary stats for those
+*TODO:* 
+  - Try to: Convert the whole dataframe to the right format
+  - Try to: Calculate the average number of words in each song and find the most common word used in each song
+  - Think about: Is this meaningful? What limitations might this have?
+  - Try to: Remove stop-words and do the summary again - is there any difference? Hint: Try *anti_join(stop_words)*
+
+```{r}
+# Convert to long format
+JB_lyrics_tidy <- JB_lyrics %>% 
+  unnest_tokens(word, Lyric)
+```
+
+```{r}
+# Average number of words per album
+JB_lyrics_tidy %>% 
+  group_by(Album) %>% 
+  count(word, sort = T) %>% 
+  summarise(mean(n))
+
+# Find most common word in each album
+JB_lyrics_tidy %>% 
+  group_by(Album) %>% 
+  count(word, sort = T) %>% 
+  filter(n == max(n))
+```
+```{r}
+# Average words per album without stopwords
+JB_lyrics_tidy %>% 
+  group_by(Album) %>% 
+  anti_join(stop_words) %>% 
+  count(word, sort = T) %>% 
+  summarise(mean(n))
+
+# Most common word per album without stopwords
+JB_lyrics_tidy %>% 
+  group_by(Album) %>% 
+  anti_join(stop_words) %>% 
+  count(word, sort = T) %>% 
+  filter(n == max(n))
+
+
+```
+
+
+#### 2. Sentiment analysis (Chapter 2)
+One way to work with text data is to look at the sentiment of the text. To conduct sentiment analysis, we need a dictionary/lexicon to match our text with. A sentiment lexicon typically consists of a dictionary of words and their corresponding sentiment rating. How the word is rated depends on the dictionary. 
+
+##### 2.1 Looking at different sentiment lexica
+We'll first take a look at the dictionaries included in the 'textdata' package, and see how they differ.
+
+*TODO:*
+  - Try to: Inspect the different lexicons - what is the difference? Hint: use *get_sentiment()*
+  - Think about: When does it make sense to use e.g. NRC over AFINN? Can you think of any limitations of the different lexicons?
+  
+```{r}
+get_sentiments('afinn')
+get_sentiments('bing')
+get_sentiments('nrc')
+```
+
+
+##### 2.2 Sentiment of songs
+Let's merge our data with the AFINN dictionary and create some initial plots
+
+*TODO:*
+ - Try to: join the data with the afinn dictionary (Hint: check *inner_join()*), and plot the distribution of sentiment values
+ - Think about: How does the data change when we merge it? What does that mean for our analysis?
+ - Think about: What does the distribution plot show, and does it match your expectations?
+
+```{r}
+# Join lyrics with dictionary
+JB_lyrics_afinn <- JB_lyrics_tidy %>% 
+  inner_join(get_sentiments("afinn"))
+
+# Inspect the data
+view(JB_lyrics_afinn)
+
+# Plot sentiment distribution
+ggplot(JB_lyrics_afinn)+
+  geom_density(aes(JB_lyrics_afinn$value),fill = 'purple',alpha = 0.6)+
+  ggtitle('Distribution of sentiment scores')+
+  theme_minimal()
+```
+
+
+##### 2.3 RQ: Are some songs more negative in their lyrics than others?
+Let's try to get some metrics out of the data and compare across songs. For simplicity, we can just subset one album for a better overview. I will not introduce any tests, but feel free to model/test this if you feel like it.
+
+*TODO:*
+ - Try to: Subset one album and calculate the total sentiment of each song
+ - Try to: Find the most positive and negative song, and check the lyrics. Does the metrics fit with the lyrics?
+ - Think about: Is it better to use the sum or the mean here?
+ - Think about: What types of research questions can you ask with sentiment analysis and lyrics data for one (or more) artist
+
+```{r}
+# Subset album and calculate total sentiment for each song
+JB_lyrics_afinn%>% 
+  filter(Album == 'Changes') %>% 
+  group_by(Title) %>% 
+  summarise(sum_sent = sum(value))
+
+JB_lyrics_afinn%>% 
+  filter(Album == 'Believe') %>% 
+  group_by(Title) %>% 
+  summarise(sum_sent = sum(value))
+
+JB_lyrics_afinn%>% 
+  filter(Album == 'Journals') %>% 
+  group_by(Title) %>% 
+  summarise(sum_sent = sum(value))
+
+JB_lyrics_afinn%>% 
+  filter(Album == 'Purpose (Deluxe)') %>% 
+  group_by(Title) %>% 
+  summarise(sum_sent = sum(value))
+
+JB_lyrics_afinn%>% 
+  filter(Album == 'Under the Mistletoe') %>% 
+  group_by(Title) %>% 
+  summarise(sum_sent = sum(value))
+
+JB_lyrics_afinn%>% 
+  filter(Album == 'Changes') %>% 
+  group_by(Title) %>% 
+  summarise(sum_sent = sum(value))
+
+JB_lyrics_afinn%>% 
+  filter(Album == 'My World - EP') %>% 
+  group_by(Title) %>% 
+  summarise(sum_sent = sum(value))
+
+JB_lyrics_afinn%>% 
+  filter(Album == 'My World 2.0') %>% 
+  group_by(Title) %>% 
+  summarise(sum_sent = sum(value))
+```
+
+
+##### 2.4 RQ: Does sentiment change over time?
+Let's return to the full dataset. We have the release year, which means that we can investigate the change of sentiment in albums over time.
+
+*TODO:*
+ - Try to: Calculate average sentiment for each year and plot it - what does it show?
+ - Think about: What are some other RQs (not lyrics) where it could be interesting to look at sentiment change over time?
+ 
+```{r}
+
+```
+
+
+
+#### 3. Basic topic 'modeling'
+Now we will turn towards topic 'modeling'. I put it in '' because we won't really fit a model, but more get an understanding about some simple metrics that can inform us about the most important words in a song/album.
+
+##### 3.1 Calculating TF-IDF
+We already looked at the most frequent words in our dataset, but the raw count is not that informative. Let's instead calculate TF-IDF (term-frequency inverse-document-frequency), a metric of the importance of a word in a specific song as a function of the total number og words in the song, and the amount of times the word appears in other songs. 
+Let's subset one album again, for simplicity.
+
+*TODO:* 
+  - Try to: Add a column to the dataframe with the term frequency (how many times does a word occur in a song).
+  - Try to: Calculate TF-IDF. Hint: take a look at the *bind_tf_idf*
+  - Think about: What can we use this metric for? Think of a couple of RQs that would fit here?
+  - Think about: What are some limitations of the TF-IDF approach when dealing woth lyrics?
+
+```{r}
+
+
+```
+
+
+
+
+#### Extra things to do which are not covered in this note but are interesting to look at:
+    1. Calculate cosine similarity between TD-IDF values for different artists 
+          - How similar are artists use of words? 
+          - If we assume that artist who are similar will have a higher tendency to collaborate, who is most likely to create a song together?
+    2. Fit a topic model using LDA (see tidytextmining.com)
+    3. I haven't touched upon lemmatization - see if you can find a good package/approach to that
