@@ -1,5 +1,12 @@
-a
-a
-a
-a
-a
+# Importer klassen Beer fra filen med klassen
+from beer import Beer
+
+# Lav 3 objekter af klassen Beer med forskellige værdier
+beer1 = Beer("Stout", 8, "Guinness")
+beer2 = Beer("IPA", 6.5, "Mikkeller")
+beer3 = Beer("Pilsner", 5, "Carlsberg")
+
+# Kald print_beer metoden på de 3 objekter
+beer1.print_beer()
+beer2.print_beer()
+beer3.print_beer()
