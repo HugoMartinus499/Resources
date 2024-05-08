@@ -15,6 +15,8 @@ Currently, the repo has examples of programming in the following languages:
 
 - *Python*
 
+- *Java*
+
 ## Helpful links
 
 ### Cmdstan install order
