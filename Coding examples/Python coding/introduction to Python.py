@@ -778,3 +778,136 @@ for item in items:
 html_str += "</ul>"
 
 print(html_str)
+
+# Building dictionaries
+# Method 1
+book_title =  ['great', 'expectations','the', 'adventures', 'of', 'sherlock','holmes','the','great','gasby','hamlet','adventures','of','huckleberry','fin']
+
+# Create an empty dictionary
+word_counter = {}
+
+# Iterate through each element in the list. If an element is already included in the dictionary, add 1 to its value. If not, add the element to the dictionary and set its value to 1.
+for word in book_title:
+        if word not in word_counter:
+            word_counter[word] = 1
+        else:
+            word_counter[word] += 1
+            
+#####  What's happening here?
+    #- The `for` loop iterates through each element in the list. For the first iteration, `word` takes the value 'great'.
+    #- Next, the if statement checks if `word` is in the `word_counter` dictionary.
+    #- Since it doesn't yet, the statement  `word_counter[word] = 1` adds *great* as a key to the dictionary with a value of 1.
+    #- Then, it leaves the if else statement and moves on to the next iteration of the for loop. `word` now takes the value *expectations* and repeats the process.
+    #- When the if condition is not met, it is because that`word` already exists in the `word_counter` dictionary, and the statement `word_counter[word] = word_counter[word] + 1` increases the count of that word by 1.
+    #- Once the `for` loop finishes iterating through the list, the `for` loop is complete. 
+    
+# Method 2
+book_title =  ['great', 'expectations','the', 'adventures', 'of', 'sherlock','holmes','the','great','gasby','hamlet','adventures','of','huckleberry','fin']```
+
+# Create an empty dictionary
+word_counter = {}
+
+# Iterate through each element, get() its value in the dictionary, and add 1.
+for word in book_title:
+    word_counter[word] = word_counter.get(word, 0) + 1
+    
+#####  What's happening here?
+#- The `for` loop iterates through the list as we saw earlier. The `for` loop feeds 'great' to the next statement in the body of the `for` loop.
+#-   In this line: ` word_counter[word] = word_counter.get(word,0) + 1`, since the key *'great'* doesn't yet exist in the dictionary, `get()` will return the value 0 and `word_counter[word]` will be set to 1.
+#- Once it encounters a word that already exists in `word_counter` (e.g. the second appearance of *'the'*),  the  value for that key is incremented by 1. On the second appearance of 'the', the key's value would add 1 again, resulting in 2.
+#- Once the `for` loop finishes iterating through the list, the `for` loop is complete.
+
+#  iterate through both the keys and values in the dictionary
+cast = {
+           "Jerry Seinfeld": "Jerry Seinfeld",
+           "Julia Louis-Dreyfus": "Elaine Benes",
+           "Jason Alexander": "George Costanza",
+           "Michael Richards": "Cosmo Kramer"
+       }
+
+# Iterating through it in the usual way with a for loop would give you just the keys, as shown below:
+for key in cast:
+    print(key)
+    
+# If you wish to iterate through both keys and values, you can use the built-in method items like this:
+for key, value in cast.items():
+    print("Actor: {}    Role: {}".format(key, value))
+    
+# You would like to count the number of fruits in your basket. 
+# In order to do this, you have the following dictionary and list of
+# fruits.  Use the dictionary and list to count the total number
+# of fruits, but you do not want to count the other items in your basket.
+
+result = 0
+basket_items = {'apples': 4, 'oranges': 19, 'kites': 3, 'sandwiches': 8}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+#Iterate through the dictionary
+
+#if the key is in the list of fruits, add the value (number of fruits) to result
+for object, count in basket_items.items():
+   if object in fruits:
+       result += count
+
+print("There are {} fruits in the basket.".format(result))
+
+# Making sure solution is robust
+#Example 1
+
+result = 0
+basket_items = {'pears': 5, 'grapes': 19, 'kites': 3, 'sandwiches': 8, 'bananas': 4}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+# Your previous solution here
+for object, count in basket_items.items():
+   if object in fruits:
+       result += count
+
+print("There are {} fruits in the basket.".format(result))
+
+#Example 2
+
+result = 0
+basket_items = {'peaches': 5, 'lettuce': 2, 'kites': 3, 'sandwiches': 8, 'pears': 4}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+# Your previous solution here
+for object, count in basket_items.items():
+   if object in fruits:
+       result += count
+
+print("There are {} fruits in the basket.".format(result))
+
+#Example 3
+
+result = 0
+basket_items = {'lettuce': 2, 'kites': 3, 'sandwiches': 8, 'pears': 4, 'bears': 10}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+# Your previous solution here
+for object, count in basket_items.items():
+   if object in fruits:
+       result += count
+
+print("There are {} fruits in the basket.".format(result))
+
+# You would like to count the number of fruits in your basket. 
+# In order to do this, you have the following dictionary and list of
+# fruits.  Use the dictionary and list to count the total number
+# of fruits and not_fruits.
+
+fruit_count, not_fruit_count = 0, 0
+basket_items = {'apples': 4, 'oranges': 19, 'kites': 3, 'sandwiches': 8}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+#Iterate through the dictionary
+
+#if the key is in the list of fruits, add to fruit_count.
+#if the key is not in the list, then add to the not_fruit_count
+for object, count in basket_items.items():
+    if object in fruits:
+       fruit_count += count
+    else:
+        not_fruit_count += count
+
+print("The number of fruits is {}.  There are {} objects that are not fruits.".format(fruit_count, not_fruit_count))
