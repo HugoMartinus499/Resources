@@ -639,6 +639,10 @@ weight = 82
 is_raining = True
 is_sunny = False
 
+is_cold = True
+
+weather = is_raining
+
 unsubscribed = True
 location = "USA"
 
@@ -802,7 +806,7 @@ for word in book_title:
     #- Once the `for` loop finishes iterating through the list, the `for` loop is complete. 
     
 # Method 2
-book_title =  ['great', 'expectations','the', 'adventures', 'of', 'sherlock','holmes','the','great','gasby','hamlet','adventures','of','huckleberry','fin']```
+book_title =  ['great', 'expectations','the', 'adventures', 'of', 'sherlock','holmes','the','great','gasby','hamlet','adventures','of','huckleberry','fin']
 
 # Create an empty dictionary
 word_counter = {}
