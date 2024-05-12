@@ -697,3 +697,84 @@ else:
     result = "Oh dear, no prize this time."
 
 print(result)
+
+## Loops
+# For loop
+#Example 1
+cities = ['new york city', 'mountain view', 'chicago', 'los angeles']
+for city in cities:
+    print(city)
+print("Done!")
+
+#Example 2
+for i in range(3):
+    print("Hello!")
+    
+# Creating and modifying lists
+## Creating a new list
+cities = ['new york city', 'mountain view', 'chicago', 'los angeles']
+capitalized_cities = []
+
+for city in cities:
+    capitalized_cities.append(city.title())
+    
+#Modifying a list
+cities = ['new york city', 'mountain view', 'chicago', 'los angeles']
+
+for index in range(len(cities)):
+    cities[index] = cities[index].title()
+    
+sentence = ["the", "quick", "brown", "fox", "jumped", "over", "the", "lazy", "dog"]
+
+# Write a for loop to print out each word in the sentence list, one word per line
+for word in sentence:
+    print(word)
+    
+# Write a for loop using range() to print out multiples of 5 up to 30 inclusive
+for i in range(5,35,5):
+    print(i)
+    
+# Write a for loop that iterates over the names list to create a usernames list. Make everything lowercase and replace spaces with underscores.
+names = ["Joey Tribbiani", "Monica Geller", "Chandler Bing", "Phoebe Buffay"]
+usernames = []
+
+# write your for loop here
+for name in names:
+    usernames.append(name.lower().replace(" ", "_"))
+
+print(usernames)
+
+# Write a for loop that uses range() to iterate over the positions in usernames to modify the list. Change each name to be lowercase and replace spaces with underscores.
+usernames = ["Joey Tribbiani", "Monica Geller", "Chandler Bing", "Phoebe Buffay"]
+
+# write your for loop here
+for name in range(len(usernames)):
+    usernames[name] = usernames[name].lower().replace(" ", "_")
+
+print(usernames)
+
+# Write a for loop that iterates over a list of strings, tokens, and counts how many of them are XML tags.
+tokens = ['<greeting>', 'Hello World!', '</greeting>']
+count = 0
+
+# write your for loop here
+for token in tokens:
+    if token[0] == "<" and token[-1] == ">": # Uses string indexing
+        count += 1
+print(count) 
+
+# Write some code, including a for loop, that iterates over a list of strings and creates a single string, html_str, which is an HTML list.
+items = ['first string', 'second string']
+html_str = "<ul>\n"  # "\ n" is the character that marks the end of the line, it does
+                     # the characters that are after it in html_str are on the next line
+
+# write your code here
+items = ['first string', 'second string']
+html_str = "<ul>\n"          # The "\n" here is the end-of-line char, causing
+                             # chars after this in html_str to be on next line
+
+for item in items:
+    html_str += "<li>{}</li>\n".format(item)
+html_str += "</ul>"
+
+print(html_str)
