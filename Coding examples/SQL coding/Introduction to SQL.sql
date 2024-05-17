@@ -51,6 +51,10 @@
 -- WITH should be defined in the beginning before the outer query
 -- When creating multiples tables with WITH, you add a comma after every new table, except for the last one leading into the main query
 -- new tables are aliased using "table_name AS" and then the query between parentheses
+-- Data cleaning is useful to structure messy data
+-- LEFT pulls a specified number of characters for each row in a specified column starting at the beginning (or from the left). As you saw here, you can pull the first three digits of a phone number using LEFT(phone_number, 3).
+-- RIGHT pulls a specified number of characters for each row in a specified column starting at the end (or from the right). As you saw here, you can pull the last eight digits of a phone number using RIGHT(phone_number, 8).
+-- LENGTH provides the number of characters for each row of a specified column. Here, you saw that we could use this to get the length of each phone number as LENGTH(phone_number).
 
 
 -- CODING Examples --
@@ -1142,3 +1146,34 @@ t2 AS (
     HAVING AVG(o.total_amt_usd) > (SELECT * FROM t1)) 
     SELECT AVG(avg_amt) 
     FROM t2;
+
+
+-- Data cleaning
+
+-- Number of companies with each domain
+SELECT RIGHT(website, 3) AS domain, COUNT(*) num_companies
+FROM accounts
+GROUP BY 1
+ORDER BY 2 DESC;
+
+-- Number of companies that start with each letter
+SELECT LEFT(UPPER(name), 1) AS first_letter, COUNT(*) num_companies
+FROM accounts
+GROUP BY 1
+ORDER BY 2 DESC;
+
+-- Companies that start with letters and numbers
+SELECT SUM(num) nums, SUM(letter) letters
+FROM (SELECT name, CASE WHEN LEFT(UPPER(name), 1) IN ('0','1','2','3','4','5','6','7','8','9') 
+                          THEN 1 ELSE 0 END AS num, 
+            CASE WHEN LEFT(UPPER(name), 1) IN ('0','1','2','3','4','5','6','7','8','9') 
+                          THEN 0 ELSE 1 END AS letter
+         FROM accounts) t1;
+
+-- Companies that start with vowels vs other charcters
+SELECT SUM(vowels) vowels, SUM(other) other
+FROM (SELECT name, CASE WHEN LEFT(UPPER(name), 1) IN ('A','E','I','O','U') 
+                           THEN 1 ELSE 0 END AS vowels, 
+             CASE WHEN LEFT(UPPER(name), 1) IN ('A','E','I','O','U') 
+                          THEN 0 ELSE 1 END AS other
+            FROM accounts) t1;
