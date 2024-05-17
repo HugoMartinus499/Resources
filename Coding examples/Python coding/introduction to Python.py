@@ -639,6 +639,10 @@ weight = 82
 is_raining = True
 is_sunny = False
 
+is_cold = True
+
+weather = is_raining
+
 unsubscribed = True
 location = "USA"
 
@@ -697,3 +701,329 @@ else:
     result = "Oh dear, no prize this time."
 
 print(result)
+
+## Loops
+# For loop
+#Example 1
+cities = ['new york city', 'mountain view', 'chicago', 'los angeles']
+for city in cities:
+    print(city)
+print("Done!")
+
+#Example 2
+for i in range(3):
+    print("Hello!")
+    
+# Creating and modifying lists
+## Creating a new list
+cities = ['new york city', 'mountain view', 'chicago', 'los angeles']
+capitalized_cities = []
+
+for city in cities:
+    capitalized_cities.append(city.title())
+    
+#Modifying a list
+cities = ['new york city', 'mountain view', 'chicago', 'los angeles']
+
+for index in range(len(cities)):
+    cities[index] = cities[index].title()
+    
+sentence = ["the", "quick", "brown", "fox", "jumped", "over", "the", "lazy", "dog"]
+
+# Write a for loop to print out each word in the sentence list, one word per line
+for word in sentence:
+    print(word)
+    
+# Write a for loop using range() to print out multiples of 5 up to 30 inclusive
+for i in range(5,35,5):
+    print(i)
+    
+# Write a for loop that iterates over the names list to create a usernames list. Make everything lowercase and replace spaces with underscores.
+names = ["Joey Tribbiani", "Monica Geller", "Chandler Bing", "Phoebe Buffay"]
+usernames = []
+
+# write your for loop here
+for name in names:
+    usernames.append(name.lower().replace(" ", "_"))
+
+print(usernames)
+
+# Write a for loop that uses range() to iterate over the positions in usernames to modify the list. Change each name to be lowercase and replace spaces with underscores.
+usernames = ["Joey Tribbiani", "Monica Geller", "Chandler Bing", "Phoebe Buffay"]
+
+# write your for loop here
+for name in range(len(usernames)):
+    usernames[name] = usernames[name].lower().replace(" ", "_")
+
+print(usernames)
+
+# Write a for loop that iterates over a list of strings, tokens, and counts how many of them are XML tags.
+tokens = ['<greeting>', 'Hello World!', '</greeting>']
+count = 0
+
+# write your for loop here
+for token in tokens:
+    if token[0] == "<" and token[-1] == ">": # Uses string indexing
+        count += 1
+print(count) 
+
+# Write some code, including a for loop, that iterates over a list of strings and creates a single string, html_str, which is an HTML list.
+items = ['first string', 'second string']
+html_str = "<ul>\n"  # "\ n" is the character that marks the end of the line, it does
+                     # the characters that are after it in html_str are on the next line
+
+# write your code here
+items = ['first string', 'second string']
+html_str = "<ul>\n"          # The "\n" here is the end-of-line char, causing
+                             # chars after this in html_str to be on next line
+
+for item in items:
+    html_str += "<li>{}</li>\n".format(item)
+html_str += "</ul>"
+
+print(html_str)
+
+# Building dictionaries
+# Method 1
+book_title =  ['great', 'expectations','the', 'adventures', 'of', 'sherlock','holmes','the','great','gasby','hamlet','adventures','of','huckleberry','fin']
+
+# Create an empty dictionary
+word_counter = {}
+
+# Iterate through each element in the list. If an element is already included in the dictionary, add 1 to its value. If not, add the element to the dictionary and set its value to 1.
+for word in book_title:
+        if word not in word_counter:
+            word_counter[word] = 1
+        else:
+            word_counter[word] += 1
+            
+#####  What's happening here?
+    #- The `for` loop iterates through each element in the list. For the first iteration, `word` takes the value 'great'.
+    #- Next, the if statement checks if `word` is in the `word_counter` dictionary.
+    #- Since it doesn't yet, the statement  `word_counter[word] = 1` adds *great* as a key to the dictionary with a value of 1.
+    #- Then, it leaves the if else statement and moves on to the next iteration of the for loop. `word` now takes the value *expectations* and repeats the process.
+    #- When the if condition is not met, it is because that`word` already exists in the `word_counter` dictionary, and the statement `word_counter[word] = word_counter[word] + 1` increases the count of that word by 1.
+    #- Once the `for` loop finishes iterating through the list, the `for` loop is complete. 
+    
+# Method 2
+book_title =  ['great', 'expectations','the', 'adventures', 'of', 'sherlock','holmes','the','great','gasby','hamlet','adventures','of','huckleberry','fin']
+
+# Create an empty dictionary
+word_counter = {}
+
+# Iterate through each element, get() its value in the dictionary, and add 1.
+for word in book_title:
+    word_counter[word] = word_counter.get(word, 0) + 1
+    
+#####  What's happening here?
+#- The `for` loop iterates through the list as we saw earlier. The `for` loop feeds 'great' to the next statement in the body of the `for` loop.
+#-   In this line: ` word_counter[word] = word_counter.get(word,0) + 1`, since the key *'great'* doesn't yet exist in the dictionary, `get()` will return the value 0 and `word_counter[word]` will be set to 1.
+#- Once it encounters a word that already exists in `word_counter` (e.g. the second appearance of *'the'*),  the  value for that key is incremented by 1. On the second appearance of 'the', the key's value would add 1 again, resulting in 2.
+#- Once the `for` loop finishes iterating through the list, the `for` loop is complete.
+
+#  iterate through both the keys and values in the dictionary
+cast = {
+           "Jerry Seinfeld": "Jerry Seinfeld",
+           "Julia Louis-Dreyfus": "Elaine Benes",
+           "Jason Alexander": "George Costanza",
+           "Michael Richards": "Cosmo Kramer"
+       }
+
+# Iterating through it in the usual way with a for loop would give you just the keys, as shown below:
+for key in cast:
+    print(key)
+    
+# If you wish to iterate through both keys and values, you can use the built-in method items like this:
+for key, value in cast.items():
+    print("Actor: {}    Role: {}".format(key, value))
+    
+# You would like to count the number of fruits in your basket. 
+# In order to do this, you have the following dictionary and list of
+# fruits.  Use the dictionary and list to count the total number
+# of fruits, but you do not want to count the other items in your basket.
+
+result = 0
+basket_items = {'apples': 4, 'oranges': 19, 'kites': 3, 'sandwiches': 8}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+#Iterate through the dictionary
+
+#if the key is in the list of fruits, add the value (number of fruits) to result
+for object, count in basket_items.items():
+   if object in fruits:
+       result += count
+
+print("There are {} fruits in the basket.".format(result))
+
+# Making sure solution is robust
+#Example 1
+
+result = 0
+basket_items = {'pears': 5, 'grapes': 19, 'kites': 3, 'sandwiches': 8, 'bananas': 4}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+# Your previous solution here
+for object, count in basket_items.items():
+   if object in fruits:
+       result += count
+
+print("There are {} fruits in the basket.".format(result))
+
+#Example 2
+
+result = 0
+basket_items = {'peaches': 5, 'lettuce': 2, 'kites': 3, 'sandwiches': 8, 'pears': 4}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+# Your previous solution here
+for object, count in basket_items.items():
+   if object in fruits:
+       result += count
+
+print("There are {} fruits in the basket.".format(result))
+
+#Example 3
+
+result = 0
+basket_items = {'lettuce': 2, 'kites': 3, 'sandwiches': 8, 'pears': 4, 'bears': 10}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+# Your previous solution here
+for object, count in basket_items.items():
+   if object in fruits:
+       result += count
+
+print("There are {} fruits in the basket.".format(result))
+
+# You would like to count the number of fruits in your basket. 
+# In order to do this, you have the following dictionary and list of
+# fruits.  Use the dictionary and list to count the total number
+# of fruits and not_fruits.
+
+fruit_count, not_fruit_count = 0, 0
+basket_items = {'apples': 4, 'oranges': 19, 'kites': 3, 'sandwiches': 8}
+fruits = ['apples', 'oranges', 'pears', 'peaches', 'grapes', 'bananas']
+
+#Iterate through the dictionary
+
+#if the key is in the list of fruits, add to fruit_count.
+#if the key is not in the list, then add to the not_fruit_count
+for object, count in basket_items.items():
+    if object in fruits:
+       fruit_count += count
+    else:
+        not_fruit_count += count
+
+print("The number of fruits is {}.  There are {} objects that are not fruits.".format(fruit_count, not_fruit_count))
+
+
+# While loops
+#Example
+card_deck = [4, 11, 8, 5, 13, 2, 8, 10]
+hand = []
+
+## adds the last element of the card_deck list to the hand list
+## until the values in hand add up to 17 or more
+while sum(hand)  < 17:
+    hand.append(card_deck.pop())
+    
+# Find the factorial of a number using a while loop.
+# number to find the factorial of
+number = 6   
+
+# start with our product equal to one
+product = 1
+
+# track the current number being multiplied
+current = 1
+
+# write your while loop here
+while  current <= number:
+    # multiply the product so far by the current number
+    product *= current
+    # increment current with each iteration until it reaches number
+    current += 1
+
+
+## print the factorial of number
+print(product)
+
+# Now use a for loop to find the factorial!
+# number to find the factorial of
+number = 6   
+
+# start with our product equal to one
+product = 1
+
+# write your for loop here
+for num in range(2, number + 1):
+    product *= num
+
+
+# print the factorial of number
+print(product)
+
+# While loop to count by number until it exceeds the upper limit
+start_num = 3 #provide some start number
+end_num = 100 #provide some end number that you stop when you hit
+count_by = 4 #provide some number to count by 
+
+# write a while loop that uses break_num as the ongoing number to 
+#   check against end_num
+break_num = start_num
+while break_num < end_num:
+    break_num += count_by
+
+print(break_num)
+
+# Code in a check to see if start number is bigger
+start_num = 2#provide some start number
+end_num = 23 #provide some end number that you stop when you hit
+count_by = 3687#provide some number to count by 
+
+# write a condition to check that end_num is larger than start_num before looping
+# write a while loop that uses break_num as the ongoing number to 
+#   check against end_num
+if start_num > end_num:
+    result = "Oops! Looks like your start value is greater than the end value. Please try again."
+
+else:
+    break_num = start_num
+    while break_num < end_num:
+        break_num += count_by
+
+    result = break_num
+
+print(result)
+
+# Write a while loop that finds the largest square number less than an integer "limit" and stores it in a variable "nearest_square".
+limit = 40
+
+# write your while loop here
+num = 0
+while (num+1)**2 < limit:
+    num += 1
+nearest_square = num**2
+
+print(nearest_square)
+
+# You need to write a loop that takes the numbers in a given list named num_list:
+num_list = [422, 136, 524, 85, 96, 719, 85, 92, 10, 17, 312, 542, 87, 23, 86, 191, 116, 35, 173, 45, 149, 59, 84, 69, 113, 166]
+
+# Your code should add up the odd numbers in the list, but only up to the first 5 odd numbers together. 
+# If there are more than 5 odd numbers, you should stop at the fifth. 
+# If there are fewer than 5 odd numbers, add all of the odd numbers.
+
+count_odd = 0
+list_sum = 0
+i = 0
+len_num_list = len(num_list)
+
+while (count_odd < 5) and (i < len_num_list): 
+    if num_list[i] % 2 != 0:
+        list_sum += num_list[i]
+        count_odd += 1
+    i += 1
+
+print ("The numbers of odd numbers added are: {}".format(count_odd))
+print ("The sum of the odd numbers added is: {}".format(list_sum))
