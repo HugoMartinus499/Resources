@@ -1027,3 +1027,114 @@ while (count_odd < 5) and (i < len_num_list):
 
 print ("The numbers of odd numbers added are: {}".format(count_odd))
 print ("The sum of the odd numbers added is: {}".format(list_sum))
+
+# Break stops a loop when a condition is meet
+# Continue skips an iteration of a loop
+
+manifest = [("bananas", 15), ("mattresses", 24), ("dog kennels", 42), ("machine", 120), ("cheeses", 5)]
+
+# the code breaks the loop when weight exceeds or reaches the limit
+print("METHOD 1")
+weight = 0
+items = []
+for cargo_name, cargo_weight in manifest:
+    print("current weight: {}".format(weight))
+    if weight >= 100:
+        print("  breaking loop now!")
+        break
+    else:
+        print("  adding {} ({})".format(cargo_name, cargo_weight))
+        items.append(cargo_name)
+        weight += cargo_weight
+
+print("\nFinal Weight: {}".format(weight))
+print("Final Items: {}".format(items))
+
+# skips an iteration when adding an item would exceed the limit
+# breaks the loop if weight is exactly the value of the limit
+print("\nMETHOD 2")
+weight = 0
+items = []
+for cargo_name, cargo_weight in manifest:
+    print("current weight: {}".format(weight))
+    if weight >= 100:
+        print("  breaking from the loop now!")
+        break
+    elif weight + cargo_weight > 100:
+        print("  skipping {} ({})".format(cargo_name, cargo_weight))
+        continue
+    else:
+        print("  adding {} ({})".format(cargo_name, cargo_weight))
+        items.append(cargo_name)
+        weight += cargo_weight
+
+print("\nFinal Weight: {}".format(weight))
+print("Final Items: {}".format(items))
+
+# Loop to create a string that is exactly 140 characters long
+# HINT: modify the headlines list to verify your loop works with different inputs
+headlines = ["Local Bear Eaten by Man",
+             "Legislature Announces New Laws",
+             "Peasant Discovers Violence Inherent in System",
+             "Cat Rescues Fireman Stuck in Tree",
+             "Brave Knight Runs Away",
+             "Papperbok Review: Totally Triffic"]
+
+news_ticker = ""
+# write your loop here
+for headline in headlines:
+    news_ticker += headline + " "
+    if len(news_ticker) >= 140:
+        news_ticker = news_ticker[:140]
+        break
+
+print(news_ticker)
+
+## Your code should check if each number in the list is a prime number
+check_prime = [26, 39, 51, 53, 57, 79, 85]
+
+## write your code here
+## HINT: You can use the modulo operator to find a factor
+for num in check_prime: ## iterate through the check_prime list
+    for i in range(2, num): ## search for factors, iterating through numbers ranging from 2 to the number itself
+        if (num % i) == 0: ## number is not prime if modulo is 0
+            print(f"{num} is not a prime number")
+            break
+        if i == num - 1:
+            print(f"{num} is a PRIME NUMBER!!!") ## otherwise keep checking until we've searched all possible factors, and then declare it prime
+
+# zip and enumerate are useful built-in functions that can come in handy when dealing with loops.
+# zip returns an iterator that combines multiple iterables into one sequence of tuples. Each tuple contains the elements in that position from all the iterables.
+# enumerate is a built in function that returns an iterator of tuples containing indices and values of a list. You'll often use this when you want the index along with each element of an iterable in a loop.
+
+letters = ['a', 'b', 'c']
+nums = [1, 2, 3]
+
+for letter, num in zip(letters, nums):
+    print("{}: {}".format(letter, num))
+
+# In addition to zipping two lists together, you can also unzip a list into tuples using an asterisk.
+some_list = [('a', 1), ('b', 2), ('c', 3)]
+letters, nums = zip(*some_list)
+
+# Enumerate
+letters = ['a', 'b', 'c', 'd', 'e']
+for i, letter in enumerate(letters):
+    print(i, letter)
+    
+# Using zip in a for loop to create a string with coordinates and labels
+x_coord = [23, 53, 2, -12, 95, 103, 14, -5]
+y_coord = [677, 233, 405, 433, 905, 376, 432, 445]
+z_coord = [4, 16, -6, -42, 3, -6, 23, -1]
+labels = ["F", "J", "A", "Q", "Y", "B", "W", "X"]
+
+points = []
+# write your for loop here
+
+for point in zip(labels, x_coord, y_coord, z_coord):
+    points.append("{}: {}, {}, {}".format(*point))
+
+for point in points:
+    print(point)
+    
+# Use zip to create a dictionary cast that uses names as keys and heights as values.
