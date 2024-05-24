@@ -22,11 +22,14 @@ class Solution:
 # Finally, we return k as the desired result.
 
 # Solution proposed, but not accepted
-def removeDuplicates( nums: list[int]) -> int:
+def removeDuplicates(nums: list[int]) -> int:
     k = len(set(nums))
     return k
-print(removeDuplicates(nums = [1,1,2,2,2,3,4,4,4]))
+print(removeDuplicates(nums = [1,1,2]))
+print(removeDuplicates(nums = [0,0,1,1,1,2,2,3,3,4]))
 
+nums = [1,1,2]    
+print(set(nums))
 
-nums = [1,1,2,2,2,3,4,4,4]    
+nums = [0,0,1,1,1,2,2,3,3,4]
 print(set(nums))
