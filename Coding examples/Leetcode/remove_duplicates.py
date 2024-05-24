@@ -29,7 +29,9 @@ print(removeDuplicates(nums = [1,1,2]))
 print(removeDuplicates(nums = [0,0,1,1,1,2,2,3,3,4]))
 
 nums = [1,1,2]    
-print(set(nums))
+print(list(set(nums)))
 
 nums = [0,0,1,1,1,2,2,3,3,4]
-print(set(nums))
+print(list(set(nums)))
+
+# This works here, but for some reason not in leetcode
