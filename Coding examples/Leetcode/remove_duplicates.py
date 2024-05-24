@@ -26,4 +26,7 @@ def removeDuplicates( nums: list[int]) -> int:
     k = len(set(nums))
     return k
 print(removeDuplicates(nums = [1,1,2,2,2,3,4,4,4]))
-    
+
+
+nums = [1,1,2,2,2,3,4,4,4]    
+print(set(nums))
