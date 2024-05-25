@@ -1280,3 +1280,81 @@ for year, winnerlist in winners.items():
 highest_count = max(win_count_dict.values())
 
 most_win_director = [key for key, value in win_count_dict.items() if value == highest_count]
+
+## Functions
+# The function header always starts with the def keyword, which indicates that this is a function definition.
+# Then comes the function name (here, cylinder_volume), which follows the same naming conventions as variables. You can revisit the naming conventions below.
+# Immediately after the name are parentheses that may include arguments separated by commas (here, height and radius). Arguments, or parameters, are values that are passed in as inputs when the function is called, and are used in the function body. If a function doesn't take arguments, these parentheses are left empty.
+# The header always end with a colon :.
+# The body of a function is the code indented after the header line. Here, it's the two lines that define pi and return the volume.
+# Within this body, we can refer to the argument variables and define new variables, which can only be used within these indented lines.
+# The body will often include a return statement, which is used to send back an output value from the function to the statement that called the function. 
+# A return statement consists of the return keyword followed by an expression that is evaluated to get the output value for the function. If there is no return statement, the function simply returns None.
+# Only use ordinary letters, numbers and underscores in your function names. They can’t have spaces, and need to start with a letter or underscore.
+# You can’t use Python's reserved words or keywords for function names, as discussed earlier with variable names. Here again is that table of Python's reserved words(opens in a new tab).
+# Try to use descriptive names that can help readers understand what the function does.
+
+# Defining functions, example:
+def cylinder_volume(height, radius): 
+    pi = 3.14159
+    return height  *pi*  radius ** 2
+
+cylinder_volume(10, 3)
+
+
+# this prints something, but does not return anything
+def show_plus_ten(num):
+    print(num + 10)
+
+# this returns something
+def add_ten(num):
+    return(num + 10)
+
+print('Calling show_plus_ten...')
+return_value_1 = show_plus_ten(5)
+print('Done calling')
+print('This function returned: {}'.format(return_value_1))
+
+print('\nCalling add_ten...')
+return_value_2 = add_ten(5)
+print('Done calling')
+print('This function returned: {}'.format(return_value_2))
+
+# We can add default arguments in a function to have default values for parameters that are unspecified in a function call.
+def cylinder_volume(height, radius=5):
+    pi = 3.14159
+    return height  *pi*  radius ** 2
+
+cylinder_volume(10, 7)  # pass in arguments by position
+cylinder_volume(height=10, radius=7)  # pass in arguments by name
+
+# Passing another value, will overwrite the default value
+
+# Defining function for population density
+# write your function here
+def population_density (population, land_area):
+    return population/land_area
+
+
+
+# test cases for your function
+test1 = population_density(10, 1)
+expected_result1 = 10
+print("expected result: {}, actual result: {}".format(expected_result1, test1))
+
+test2 = population_density(864816, 121.4)
+expected_result2 = 7123.6902801
+print("expected result: {}, actual result: {}".format(expected_result2, test2))
+
+# Defining function for weeks and days split up
+# write your function here
+def readable_timedelta(days):
+# use integer division to get the number of weeks
+    weeks = days // 7
+    # use % to get the number of days that remain
+    remainder = days % 7
+    return "{} week(s) and {} day(s).".format(weeks, remainder)
+
+# test your function
+print(readable_timedelta(10))
+
