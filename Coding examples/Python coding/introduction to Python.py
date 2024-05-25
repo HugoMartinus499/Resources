@@ -1358,3 +1358,13 @@ def readable_timedelta(days):
 # test your function
 print(readable_timedelta(10))
 
+# Variable scope
+# Variables can have different scopes, if a variable is defined within a function, it can only be used within that function, but if it is defined outside, it can be used anywhere
+
+# This results and error, since functions can't redefine variables out of their scope
+egg_count = 0
+
+def buy_eggs():
+    egg_count += 12 # purchase a dozen eggs
+
+buy_eggs()
