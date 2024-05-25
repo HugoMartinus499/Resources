@@ -1368,3 +1368,104 @@ def buy_eggs():
     egg_count += 12 # purchase a dozen eggs
 
 buy_eggs()
+
+# Documentation
+# Docstrings are strings surrounded by triple quotes that explain what a function does
+# Examples:
+def population_density(population, land_area):
+    """Calculate the population density of an area. """
+    return population / land_area
+
+def population_density(population, land_area):
+    """Calculate the population density of an area.
+
+    INPUT:
+    population: int. The population of that area
+    land_area: int or float. This function is unit-agnostic, if you pass in values in terms
+    of square km or square miles the function will return a density in those units.
+
+    OUTPUT: 
+    population_density: population / land_area. The population density of a particular area.
+    """
+    return population / land_area
+
+# Docstring for timedelta function
+def readable_timedelta(days):
+    # insert your docstring here
+    """ A function that separates a number of days into weeks and days.
+    INPUT:
+    days: The number of days counted
+    
+    OUTPUT:
+    weeks: days divided into subsections of 7
+    remainder: remaining days after counting number of weeks
+    returns number of weeks and number of days"""
+
+    weeks = days // 7
+    remainder = days % 7
+    return "{} week(s) and {} day(s)".format(weeks, remainder)
+    
+print(readable_timedelta(23))
+
+# Lambda expressions
+# Can be used to create quick anonymous functions
+# Example, normal function
+def multiply(x, y):
+    return x * y
+# Same function in lambda:
+multiply = lambda x, y: x * y
+
+multiply(4, 7)
+
+
+# Rewriting functions as lambda: Map
+numbers = [
+              [34, 63, 88, 71, 29],
+              [90, 78, 51, 27, 45],
+              [63, 37, 85, 46, 22],
+              [51, 22, 34, 11, 18]
+           ]
+
+def mean(num_list):
+    return sum(num_list) / len(num_list)
+
+averages = list(map(mean, numbers))
+print(averages)
+
+# rewrite code above as lamda
+mean = lambda num_list: sum(num_list) / len(num_list)
+
+averages = list(map(mean, numbers))
+print(averages)
+
+# Alternatively, put lambda expression instead of function name
+numbers = [
+              [34, 63, 88, 71, 29],
+              [90, 78, 51, 27, 45],
+              [63, 37, 85, 46, 22],
+              [51, 22, 34, 11, 18]
+           ]
+
+averages = list(map(lambda x: sum(x) / len(x), numbers))
+print(averages)
+
+# Rewriting functions as lambda: Filter
+cities = ["New York City", "Los Angeles", "Chicago", "Mountain View", "Denver", "Boston"]
+
+def is_short(name):
+    return len(name) < 10
+
+short_cities = list(filter(is_short, cities))
+print(short_cities)
+
+# Rewrite above as lambda
+is_short = lambda name: len(name) < 10
+
+short_cities = list(filter(is_short, cities))
+print(short_cities)
+
+# Alternatively, put lambda expression instead of function name
+cities = ["New York City", "Los Angeles", "Chicago", "Mountain View", "Denver", "Boston"]
+
+short_cities = list(filter(lambda x: len(x) < 10, cities))
+print(short_cities)
