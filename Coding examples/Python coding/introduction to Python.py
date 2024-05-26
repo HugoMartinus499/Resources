@@ -1470,3 +1470,6 @@ cities = ["New York City", "Los Angeles", "Chicago", "Mountain View", "Denver", 
 short_cities = list(filter(lambda x: len(x) < 10, cities))
 print(short_cities)
 
+# print e to the power of 3 using the math module
+import math
+print(math.exp(3))
