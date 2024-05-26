@@ -1473,3 +1473,43 @@ print(short_cities)
 # print e to the power of 3 using the math module
 import math
 print(math.exp(3))
+
+# Iterators and generators
+# Iterables are objects that can return one of their elements at a time, such as a list. Many of the built-in functions we’ve used so far, like 'enumerate,' return an iterator.
+# An iterator is an object that represents a stream of data. This is different from a list, which is also an iterable, but is not an iterator because it is not a stream of data.
+# Generators are a simple way to create iterators using functions.
+# Example:
+def my_range(x):
+    i = 0
+    while i < x:
+        yield i # Uses yield instead of return
+        i += 1
+        
+# Write your own generator function that works like the built-in function enumerate
+lessons = ["Why Python Programming", "Data Types and Operators", "Control Flow", "Functions", "Scripting"]
+
+def my_enumerate(iterable, start=0):
+    # Implement your generator function here
+    count = start
+    for element in iterable:
+        yield count, element
+        count += 1
+
+
+for i, lesson in my_enumerate(lessons, 1):
+    print("Lesson {}: {}".format(i, lesson))
+    
+# Implement a generator function, chunker, that takes in an iterable and yields a chunk of a specified size at a time.
+def chunker(iterable, size):
+    # Implement function here
+    for i in range(0, len(iterable), size):
+        yield iterable[i:i + size]
+
+
+for chunk in chunker(range(25), 4):
+    print(list(chunk))
+    
+# Generator expressions
+sq_list = [x**2 for x in range(10)]  # this produces a list of squares
+
+sq_iterator = (x**2 for x in range(10))  # this produces an iterator of squares
