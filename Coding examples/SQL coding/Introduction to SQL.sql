@@ -61,6 +61,10 @@
 -- Note, both POSITION and STRPOS are case sensitive, so looking for A is different than looking for a.
 -- Therefore, if you want to pull an index regardless of the case of a letter, you might want to use LOWER or UPPER to make all of the characters lower or uppercase.
 -- If names are stored in separate columns could be combined together to create a full name: CONCAT(first_name, ' ', last_name) or with piping as first_name || ' ' || last_name.
+-- CAST can change the data type
+-- TO_DATE can convert text date to number date, like january to 1
+-- SUBSTR can be used to extract a substring from a string, following this syntax: SUBSTR(start position, number of characters extracted)
+-- COALESCE can replace NULL values
 
 
 -- CODING Examples --
@@ -632,7 +636,7 @@ SELECT DATE_PART('year', occurred_at) ord_year,  SUM(total_amt_usd) total_spent
 	FROM orders
 	GROUP BY 1
 	ORDER BY 2 DESC;
--- The sales increase every year, except for 2017, ehich might be due to the year not being finished in the dataset. 2013 and 2017 have less months available, only month 12 for 2013 and month 1 for 2017.
+-- The sales increase every year, except for 2017, Which might be due to the year not being finished in the dataset. 2013 and 2017 have less months available, only month 12 for 2013 and month 1 for 2017.
 
 -- Total sales per month
 SELECT DATE_PART('month', occurred_at) ord_month,  SUM(total_amt_usd) total_spent
@@ -1220,3 +1224,55 @@ WITH t1 AS (
 SELECT first_name, last_name, CONCAT(first_name, '.', last_name, '@', name, '.com'), 
     LEFT(LOWER(first_name), 1) || RIGHT(LOWER(first_name), 1) || LEFT(LOWER(last_name), 1) || RIGHT(LOWER(last_name), 1) || LENGTH(first_name) || LENGTH(last_name) || REPLACE(UPPER(name), ' ', '') password
 FROM t1;
+
+-- Write a query to look at the top ten rows of a dataset
+SELECT *
+    FROM sf_crime_data
+LIMIT 10;
+
+-- Write a query to convert the date to the right format
+SELECT date orig_date, (SUBSTR(date, 7, 4) || '-' || LEFT(date, 2) || '-' || SUBSTR(date, 4, 2)) new_date
+    FROM sf_crime_data;
+
+-- Use cast or :: to convert to a date
+SELECT date orig_date, (SUBSTR(date, 7, 4) || '-' || LEFT(date, 2) || '-' || SUBSTR(date, 4, 2)):: date new_date
+    FROM sf_crime_data;
+
+SELECT date orig_date, CAST((SUBSTR(date, 7, 4) || '-' || LEFT(date, 2) || '-' || SUBSTR(date, 4, 2)) AS date) new_date
+FROM sf_crime_data;
+
+-- Progressions of filling in missing data
+SELECT *
+FROM accounts a
+LEFT JOIN orders o
+ON a.id = o.account_id
+WHERE o.total IS NULL;
+
+SELECT COALESCE(o.id, a.id) filled_id, a.name, a.website, a.lat, a.long, a.primary_poc, a.sales_rep_id, o.*
+FROM accounts a
+LEFT JOIN orders o
+ON a.id = o.account_id
+WHERE o.total IS NULL;
+
+SELECT COALESCE(o.id, a.id) filled_id, a.name, a.website, a.lat, a.long, a.primary_poc, a.sales_rep_id, COALESCE(o.account_id, a.id) account_id, o.occurred_at, o.standard_qty, o.gloss_qty, o.poster_qty, o.total, o.standard_amt_usd, o.gloss_amt_usd, o.poster_amt_usd, o.total_amt_usd
+FROM accounts a
+LEFT JOIN orders o
+ON a.id = o.account_id
+WHERE o.total IS NULL;
+
+SELECT COALESCE(o.id, a.id) filled_id, a.name, a.website, a.lat, a.long, a.primary_poc, a.sales_rep_id, COALESCE(o.account_id, a.id) account_id, o.occurred_at, COALESCE(o.standard_qty, 0) standard_qty, COALESCE(o.gloss_qty,0) gloss_qty, COALESCE(o.poster_qty,0) poster_qty, COALESCE(o.total,0) total, COALESCE(o.standard_amt_usd,0) standard_amt_usd, COALESCE(o.gloss_amt_usd,0) gloss_amt_usd, COALESCE(o.poster_amt_usd,0) poster_amt_usd, COALESCE(o.total_amt_usd,0) total_amt_usd
+FROM accounts a
+LEFT JOIN orders o
+ON a.id = o.account_id
+WHERE o.total IS NULL;
+
+SELECT COUNT(*)
+FROM accounts a
+LEFT JOIN orders o
+ON a.id = o.account_id;
+
+SELECT COALESCE(o.id, a.id) filled_id, a.name, a.website, a.lat, a.long, a.primary_poc, a.sales_rep_id, COALESCE(o.account_id, a.id) account_id, o.occurred_at, COALESCE(o.standard_qty, 0) standard_qty, COALESCE(o.gloss_qty,0) gloss_qty, COALESCE(o.poster_qty,0) poster_qty, COALESCE(o.total,0) total, COALESCE(o.standard_amt_usd,0) standard_amt_usd, COALESCE(o.gloss_amt_usd,0) gloss_amt_usd, COALESCE(o.poster_amt_usd,0) poster_amt_usd, COALESCE(o.total_amt_usd,0) total_amt_usd
+FROM accounts a
+LEFT JOIN orders o
+ON a.id = o.account_id;
+
