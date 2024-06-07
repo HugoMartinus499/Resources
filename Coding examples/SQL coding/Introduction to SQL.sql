@@ -1006,6 +1006,7 @@ SELECT AVG(avg_amt)
         HAVING AVG(o.total_amt_usd) > (SELECT AVG(o.total_amt_usd) avg_all 
                                             FROM orders o)) temp_table 
 
+
 -- average number of events for each channel per day with the WITH statement
 -- first the inner query
 SELECT DATE_TRUNC('day',occurred_at) AS day, 
