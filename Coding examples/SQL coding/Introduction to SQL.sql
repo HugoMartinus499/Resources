@@ -67,6 +67,7 @@
 -- COALESCE can replace NULL values
 -- The WINDOW clause can be used to create an alias for a window used in many different aggregations
 -- LAG and LEAD clauses can be used to check previous(LAG) and next(LEAD) rows
+-- NTILE function is used to specify percentiles. So NTILE(100) is percentage, NTILE(4) is quartile. The number is the number of parts to split into
 
 
 -- CODING Examples --
@@ -1381,3 +1382,29 @@ SELECT occurred_at,
  GROUP BY 1
 ) sub
 
+-- Use the NTILE functionality to divide the accounts into 4 levels in terms of the amount of standard_qty for their orders.
+SELECT
+       account_id,
+       occurred_at,
+       standard_qty,
+       NTILE(4) OVER (PARTITION BY account_id ORDER BY standard_qty) AS standard_quartile
+  FROM orders 
+ ORDER BY account_id DESC
+
+-- Use the NTILE functionality to divide the accounts into two levels in terms of the amount of gloss_qty for their orders. 
+SELECT
+       account_id,
+       occurred_at,
+       gloss_qty,
+       NTILE(2) OVER (PARTITION BY account_id ORDER BY gloss_qty) AS gloss_half
+  FROM orders 
+ ORDER BY account_id DESC
+
+-- Use the NTILE functionality to divide the orders for each account into 100 levels in terms of the amount of total_amt_usd for their orders.
+SELECT
+       account_id,
+       occurred_at,
+       total_amt_usd,
+       NTILE(100) OVER (PARTITION BY account_id ORDER BY total_amt_usd) AS total_percentile
+  FROM orders 
+ ORDER BY account_id DESC
