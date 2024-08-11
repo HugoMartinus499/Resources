@@ -68,6 +68,9 @@
 -- The WINDOW clause can be used to create an alias for a window used in many different aggregations
 -- LAG and LEAD clauses can be used to check previous(LAG) and next(LEAD) rows
 -- NTILE function is used to specify percentiles. So NTILE(100) is percentage, NTILE(4) is quartile. The number is the number of parts to split into
+-- UNION only appends distinct values. More specifically, when you use UNION, the dataset is appended, and any rows in the appended table that are exactly identical to rows in the first table are dropped. 
+-- If you’d like to append all the values from the second table, use UNION ALL. You’ll likely use UNION ALL far more often than UNION.
+-- EXPLAIN entered before the query, to see the steps in running the query and using this to optimize it
 
 
 -- CODING Examples --
@@ -1470,3 +1473,41 @@ SELECT we1.id AS we_id,
   AND we1.occurred_at > we2.occurred_at
   AND we1.occurred_at <= we2.occurred_at + INTERVAL '1 day'
 ORDER BY we1.account_id, we2.occurred_at
+
+-- Write a query that uses UNION ALL on two instances (and selecting all columns) of the accounts table. Then inspect the results and answer the subsequent quiz.
+SELECT *
+    FROM accounts
+
+UNION ALL
+
+SELECT *
+  FROM accounts
+
+-- Add a WHERE clause to each of the tables that you unioned in the query above, filtering the first table where name equals Walmart and filtering the second table where name equals Disney. Inspect the results then answer the subsequent quiz.
+SELECT *
+    FROM accounts
+    WHERE name = 'Walmart'
+
+UNION ALL
+
+SELECT *
+  FROM accounts
+  WHERE name = 'Disney'
+
+-- Perform the union in your first query (under the Appending Data via UNION header) in a common table expression and name it double_accounts. 
+-- Then do a COUNT the number of times a name appears in the double_accounts table. If you do this correctly, your query results should have a count of 2 for each name.
+WITH double_accounts AS (
+    SELECT *
+      FROM accounts
+    
+    UNION ALL
+    
+    SELECT *
+      FROM accounts
+)
+
+SELECT name,
+       COUNT(*) AS name_count
+ FROM double_accounts 
+GROUP BY 1
+ORDER BY 2 DESC
